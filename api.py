@@ -64,7 +64,7 @@ def set_city(city):
 def get_api(city, new=False):
     # Check if the session has a last updated or if it is older than 15 minutes, than updated the json.
     if session.get('last_u') is None or session.get('last_u') + timedelta(minutes = 60) < datetime.utcnow().replace(tzinfo=timezone.utc) or new == True:
-        data = requests.get(f'http://api.weatherapi.com/v1/forecast.json?key={current_app.config["SECRET_KEY"]}&q={city}&days=3&aqi=no&alerts=yes')
+        data = requests.get(f'http://api.weatherapi.com/v1/forecast.json?key={current_app.config["SECRET_KEY"]}&q={city}&days=3&aqi=yes&alerts=yes')
         print('updated')
         session['data'] = data.json()
         session['last_u'] =  datetime.utcnow().replace(tzinfo=timezone.utc)

@@ -4,7 +4,7 @@
     --color2: #F0A500;
     --color3: #E45826;
     --color4: #ebebeb;
-    --color4-l: #ebebeb69;
+    --color4-l: #9c9a9a;
 }
 
 html,
@@ -20,15 +20,21 @@ body {
     grid-template-rows: auto 1fr auto;
 }
 
-#main {
-    color:var(--color1);
+#main,
+.modal,
+.btn-alerts:hover
+{
+    color: var(--color1);
 }
 
-.nav-link {
+.nav-link,
+.navbar-toggler .bi-list {
     color: var(--color4);
 }
 
-.title {
+.title,
+.active,
+.nav-link:hover {
     color: var(--color2) !important;
 }
 
@@ -46,26 +52,18 @@ body {
     color: var(--color1);
 }
 
-
-.nav-link:hover {
-    color: var(--color2) !important;
-}
-
-.active {
-    color: var(--color2) !important;
-}
-
 .search {
     color: var(--color2);
     border-color: var(--color2);
 }
 
-[class*=fav] {
+#fav-btn, #fav-btn:active {
     color: var(--color2);
     transition: ease transform 200ms;
+    border: none;
 }
 
-[class*=fav]:hover {
+#fav-btn:hover {
     transform: scale(1.2);
     transform-origin: center;
     color: var(--color2);
@@ -80,9 +78,8 @@ body {
     background-color: var(--color2);
     border-color: var(--color2);
 }
-
-.navbar-toggler .bi-list {
-    color: var(--color4);
+#login-form .btn-primary:hover {
+    background-color: var(--color3);
 }
 
 .widget-list {
@@ -103,7 +100,7 @@ body {
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: space-between;
-    border-bottom: 1px solid var(--color1-l);
+    border-bottom: 1px solid var(--color2);
     opacity: 10;
     margin: 0;
     padding: 0.5rem 0;
@@ -189,14 +186,6 @@ ul {
     margin: 2px 10px;
 }
 
-.btn-alerts:hover {
-    color: var(--color1);
-}
-
-.modal {
-    color: var(--color1);
-}
-
 #login-form .card-body {
     display: flex;
     flex-direction: column;
@@ -234,13 +223,58 @@ ul {
     border-radius: 5px;
 }
 
-#main > * {
+#main>* {
     margin-left: 0.5rem;
     margin-right: 0.5rem;
 }
 
-@media only screen and (max-width: 767px ) {
+@media only screen and (max-width: 767px) {
     #col1 .widget-list:last-child {
-        border-bottom: 1px solid var(--color1);
+        border-bottom: 1px solid var(--color2);
     }
+}
+
+.bar, #aqi-text {
+    width: fit-content;
+}
+
+.bar .section::before{
+    content: "";
+    display: inline-block;
+    width: 40px;
+    height: 5px;
+    background-color: var(--color4-l);
+}
+
+.active-good::before {
+    background-color: rgb(0, 228, 0) !important;
+}
+
+.active-moderate::before {
+    background-color: rgb(255, 255, 0) !important;
+}
+
+.active-poor::before {
+    background-color: rgb(255, 126, 0) !important;
+}
+
+.active-unhealty::before {
+    background-color: rgb(255, 0, 0) !important;
+}
+
+.active-very-unhealty::before {
+    background-color: rgb(143, 63, 151) !important;
+}
+
+.active-hazardous::before {
+    background-color: rgb(126, 0, 35) !important;
+}
+
+#aqi-list .aqi-details-sections::before{
+    content: "";
+    display: inline-block;
+    width: 2px;
+    height: 100%;
+    vertical-align: bottom;
+    margin-right: 6px;
 }

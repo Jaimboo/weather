@@ -1,9 +1,13 @@
 {% extends 'layout.html' %}
 
+{% block script %}
+<script src="{{ url_for('static', filename='js/aqi.js') }}"></script>
+{% endblock script %}
+
 {% block content %}
 
 {% if session['data']['alerts']['alert'] %}
-<div class="row mt-2">
+<div class="row mb-2">
 
   <a href="#alerts-modal" class="btn-alerts" data-bs-toggle="modal">
     <i class="bi bi-exclamation-triangle-fill"></i>
@@ -23,18 +27,18 @@
 
         <div class="modal-body">
           <div class="accordion" id="accordion-alert">
-          {% for alert in session['data']['alerts']['alert'] %}
+            {% for alert in session['data']['alerts']['alert'] %}
             <div class="accordion-item">
 
               <h5 class="accordion-header" id="heading-{{ loop.index }}">
                 <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                  data-bs-target="#alert-{{ loop.index }}" aria-expanded="true"
-                  aria-controls="alert-{{ loop.index }}">
+                  data-bs-target="#alert-{{ loop.index }}" aria-expanded="true" aria-controls="alert-{{ loop.index }}">
                   {{ alert['event'] }}
                 </button>
               </h5>
 
-              <div id="alert-{{ loop.index }}" class="accordion-collapse collapse" aria-labelledby="heading-{{ loop.index }}" data-bs-parent="accordion-alert">
+              <div id="alert-{{ loop.index }}" class="accordion-collapse collapse"
+                aria-labelledby="heading-{{ loop.index }}" data-bs-parent="accordion-alert">
                 <div class="accordion-body">
                   <p class="text-muted">Effective: {{ alert['effective'] }}</p>
                   <p class="text-muted">Exprires: {{ alert['expires'] }}</p>
@@ -54,7 +58,7 @@
 </div>
 {% endif %}
 
-<div class="row justify-content-between mt-2 gap-2">
+<div class="row justify-content-between gap-2">
 
   <div class="col-12 col-md py-2 widget">
     <div class="row">
@@ -64,10 +68,10 @@
       </div>
       <div class="col-auto">
         {% if session['city'] in session['favorite'] %}
-        <a href="{{ url_for('api.favorite', city=session['city'], add=False) }}" class="btn fav-remove"
+        <a id="fav-btn" href="{{ url_for('api.favorite', city=session['city'], add=False) }}" class="btn fav-remove"
           title="Remove from favorites"><i class="bi bi-star-fill"></i></a>
         {% else %}
-        <a href="{{ url_for('api.favorite', city=session['city'], add=True) }}" class="btn fav-add "
+        <a id="fav-btn" href="{{ url_for('api.favorite', city=session['city'], add=True) }}" class="btn fav-add "
           title="Add to favorites"><i class="bi bi-star"></i></a>
         {% endif %}
       </div>
@@ -177,79 +181,62 @@
   </div>
 </div>
 
+<div class="row justify-content-evenly gap-2 widget mt-2">
+  <div class="row py-2">
+    <h5 class="text-center">Air quality</h5>
+  </div>
+  <div class="col-auto py2">
 
 
-<!-- <div id="main" class="col-12 col-sm py-2">
+    <div class="row align-items-center flex-column">
 
-  <div class="row">
-
-    <div class="col">
-
-      <div class="row">
-        <div class="col text-start m-auto">
-          <h5 id="location-name">{{ session['data']['location']['name'] }}, {{ session['data']['location']['region'] }},
-            {{session['data']['location']['country']}}</h5>
-        </div>
-        <div class="col-auto">
-          {% if session['city'] in session['favorite'] %}
-          <a href="{{ url_for('api.favorite', city=session['city'], add=False) }}" class="btn  fav-remove"
-            title="Remove from favorites"><i class="bi bi-star-fill"></i></a>
-          {% else %}
-          <a href="{{ url_for('api.favorite', city=session['city'], add=True) }}" class="btn  fav-add "
-            title="Add to favorites"><i class="bi bi-star"></i></a>
-          {% endif %}
-        </div>
+      <div class="bar" data-active="{{ session['data']['current']['air_quality']['us-epa-index'] }}">
+        <span class="section"></span>
+        <span class="section"></span>
+        <span class="section"></span>
+        <span class="section"></span>
+        <span class="section"></span>
+        <span class="section"></span>
       </div>
 
-      <div class="row text-center justify-content-evenly text-md-start align-items-center">
-
-        <div class="col-12 col-md-auto">
-          <img id="weather-icon" src="{{ session['data']['current']['condition']['icon'] }}"
-            alt="{{ session['data']['current']['condition']['text'] }}">
-        </div>
-        <div class="col-auto d-flex gap-3">
-          <ul class="widget-list">
-            <li>
-              <p id="weather-description">{{ session['data']['current']['condition']['text'] }}</p>
-            </li>
-            <li>
-              <p id="main-temp">Temperature: {{ session['data']['current']['temp_c'] }} C°</p>
-            </li>
-            <li>
-              <p id="main-feels_like">Feels: {{ session['data']['current']['feelslike_c'] }} C°</p>
-            </li>
-          </ul>
-          <ul class="widget-list">
-            <li>
-              <p id="main-pressure">Pressure: {{ session['data']['current']['pressure_mb'] }} hPa</p>
-            </li>
-            <li>
-              <p id="main-humidity">Humidity: {{ session['data']['current']['humidity'] }}%</p>
-            </li>
-            <li>
-              <p id="wind-speed">Wind: {{ session['data']['current']['wind_kph'] }} kph</p>
-            </li>
-            <li>
-              <p id="clouds-all">Cloudiness: {{ session['data']['current']['cloud'] }}%</p>
-            </li>
-          </ul>
-        </div>
-
-      </div>
-
-      <div class="row">
-        <div class="col d-flex justify-content-between">
-
-          <p>Powered by <a href="https://www.weatherapi.com/" title="Free Weather API">WeatherAPI.com</a></p>
-        </div>
-      </div>
+      <h6 id="aqi-text" class="text-capitalize">Good</h6>
 
     </div>
+
   </div>
-</div> -->
-
-<!-- <aside id="sidebar" class="col-12 ms-sm-2 col-sm-auto py-2">
-  {% include 'sidebar.html' %}
-</aside> -->
-
+  <div id="aqi-list" class="col-md-5 py-2">
+    <ul class="widget-list">
+      <li>
+        <p class="aqi-details-sections" data-aqi-type="co"
+          data-value="{{ '%0.2f' % session['data']['current']['air_quality']['co'] | float}}">CO</p>
+        <p>{{ "%0.2f" % session['data']['current']['air_quality']['co'] | float}} μg/m3</p>
+      </li>
+      <li>
+        <p class="aqi-details-sections" data-aqi-type="no2"
+          data-value="{{ '%0.2f' % session['data']['current']['air_quality']['no2'] | float}}">NO2</p>
+        <p>{{ "%0.2f" % session['data']['current']['air_quality']['no2'] | float}} μg/m3</p>
+      </li>
+      <li>
+        <p class="aqi-details-sections" data-aqi-type="o3"
+          data-value="{{ '%0.2f' % session['data']['current']['air_quality']['o3'] | float}}">O3</p>
+        <p>{{ "%0.2f" % session['data']['current']['air_quality']['o3'] | float}} μg/m3</p>
+      </li>
+      <li>
+        <p class="aqi-details-sections" data-aqi-type="so2"
+          data-value="{{ '%0.2f' % session['data']['current']['air_quality']['so2'] | float}}">SO2</p>
+        <p>{{ "%0.2f" % session['data']['current']['air_quality']['so2'] | float}} μg/m3</p>
+      </li>
+      <li>
+        <p class="aqi-details-sections" data-aqi-type="pm2_5"
+          data-value="{{ '%0.2f' % session['data']['current']['air_quality']['pm2_5'] | float}}">PM2.5</p>
+        <p>{{ "%0.2f" % session['data']['current']['air_quality']['pm2_5'] | float}} μg/m3</p>
+      </li>
+      <li>
+        <p class="aqi-details-sections" data-aqi-type="pm10"
+          data-value="{{ '%0.2f' % session['data']['current']['air_quality']['pm10'] | float}}">PM10</p>
+        <p>{{ "%0.2f" % session['data']['current']['air_quality']['pm10'] | float}} μg/m3</p>
+      </li>
+    </ul>
+  </div>
+</div>
 {% endblock %}
