@@ -14,16 +14,63 @@ def register():
         username = request.form['username']
         password = request.form['password']
         db = get_db()
-        
-        if not username:
-            abort(400, 'Username is required')
-        if not password:
-            abort(400, 'Password is required')
+        error = None
 
-        try:
-            db.execute('INSERT INTO user (username, password) VALUES (?, ?)', (username, generate_password_hash(password)) )
-            db.commit()
-        except db.IntegrityError:
-            abort(400, 'User already registered')
+        if not username:
+            error = 'Username is required.'
+        elif not password:
+            error = 'Password is required.'
         
+        if error is None:
+            try:
+                db.execute('INSERT INTO user (username, password) VALUES (?, ?)', (username, generate_password_hash(password)) )
+                db.commit()
+            except db.IntegrityError:
+                error = 'User already registered'
+            else:
+                return redirect(url_for('auth.login'))
+
+        flash(error)
+
     return render_template('register.html')
+
+@bp.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        db = get_db()
+        error = None
+
+        if not username:
+            error = 'Username is required.'
+        if not password:
+            error = 'Password is required'
+        
+        user = db.execute('SELECT * FROM user WHERE username = ?', (username,)).fetchone()
+
+        if user is None or not check_password_hash(user['password'], password):
+            error = 'Incorrect credentials.'
+
+        if error is None:
+            session.clear()
+            session['user_id'] = user['id']
+            return redirect(url_for('api.index'))
+
+        flash(error)
+
+    return render_template('/login.html')
+
+@bp.route('/logout')
+def logout():
+    session.clear()
+    return redirect(url_for('api.index'))
+
+def login_required(view):
+    @functools.wraps(view)
+    def wrapped_view(**kwargs):
+        if g.user is None:
+            return redirect(url_for('auth/login'))
+        return view(**kwargs)
+
+    return wrapped_view
