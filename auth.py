@@ -1,6 +1,6 @@
 import functools
 
-from flask import abort, Blueprint, flash, g, redirect, render_template, request, session, url_for
+from flask import Blueprint, flash, g, redirect, render_template, request, session, url_for
 
 from werkzeug.security import check_password_hash, generate_password_hash
 
@@ -55,11 +55,20 @@ def login():
         if error is None:
             session.clear()
             session['user_id'] = user['id']
+            print(session['user_id'])
             return redirect(url_for('api.index'))
 
         flash(error)
 
     return render_template('/login.html')
+
+@bp.before_app_request
+def load_logged_in_user():
+    if session.get('user_id') is None:
+        g.user = None
+    else:
+        g.user = get_db().execute('SELECT username, id FROM user WHERE id = ? ', (session.get('user_id'), )).fetchone()
+        
 
 @bp.route('/logout')
 def logout():
