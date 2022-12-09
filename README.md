@@ -37,4 +37,3 @@
     - get_db
     - close_db
     - init_db
-    -
