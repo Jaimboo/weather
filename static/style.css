@@ -1,0 +1,25 @@
+.title{
+    color: orange !important;
+}
+
+.nav-link{
+    color: whitesmoke;
+}
+
+.nav-link:hover{
+    color: orange;
+}
+
+.search{
+    color: orange;
+    border-color: orange;
+}
+
+.search:hover{
+    color: #343a40;
+    background-color: orange;
+}
+
+.navbar-toggler .bi-list{
+    color: whitesmoke;
+}
