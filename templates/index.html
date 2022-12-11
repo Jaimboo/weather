@@ -1,9 +1,63 @@
 {% extends 'layout.html' %}
 
 {% block header %}
-  <h1>{% block title %}INDEX{% endblock %}</h1>
+    {% block title %}{% endblock %}
 {% endblock %}
 
 {% block content %}
+  <div class="container bg-dark text-light">
+    <div class="row">
 
+      <div class="col">
+
+        <div class="row">
+          <div class="col text-start m-auto">
+            <p id="location-name">{{ data["location"]['name'] }}, {{ data['location']['region'] }}, {{data['location']['country']}}</p>
+          </div>
+
+          <div class="col text-end m-auto">
+          </div>
+        </div>
+
+        <div class="row justify-content-evenly text-center text-sm-start align-items-center">
+
+          <div class="col-12 col-md-auto">
+            <img src="{{ data['current']['condition']['icon'] }}" alt="{{ data['current']['condition']['text'] }}">
+          </div>
+
+          <div class="col-6 col-sm-auto">
+            <ul class="widget-list">
+              <li><p id="weather-description">{{ data['current']['condition']['text'] }}</p></li>
+              <li><p id="main-temp">Temperature: {{ data['current']['temp_c'] }} C°</p></li>
+              <li><p id="main-feels_like">Feels: {{ data['current']['feelslike_c'] }} C°</p></li>
+            </ul>
+          </div>
+
+          <div class="col-6 col-sm-auto">
+            <ul class="widget-list">
+              <li><p id="main-pressure">Pressure: {{ data['current']['pressure_mb'] }} hPa</p></li>
+              <li><p id="main-humidity">Humidity: {{ data['current']['humidity'] }}%</p></li>
+              <li><p id="wind-speed">Wind: {{ data['current']['wind_kph'] }} kph</p></li>
+              <li><p id="clouds-all">Cloudiness: {{ data['current']['cloud'] }}%</p></li>
+            </ul>
+          </div>
+
+        </div>
+
+        <div class="row">
+          <div class="col d-flex justify-content-between">
+            <!-- NEED IF -->
+            {% if data['alerts']['alert'] %}
+              <p id="alerts">{{ data['alerts']['alert'][0]['event'] }}</p>
+            {% else %}
+              <p id="alerts">No Alerts</p>
+            {% endif %}
+            <p>Powered by <a href="https://www.weatherapi.com/" title="Free Weather API">WeatherAPI.com</a></p>          
+          </div>
+        </div>
+
+      </div>
+        
+    </div>
+  </div>
 {% endblock %}
