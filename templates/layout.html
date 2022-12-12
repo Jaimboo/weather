@@ -81,7 +81,17 @@
         <div class="flash">{{ message }}</div>
       {% endfor %}
 
-      {% block content %}{% endblock %}
+      <div class="container text-light mt-2">
+        <div class="row justify-content-between gap-2">
+          <div class="col-12 bg-dark col-sm py-2">
+            {% block content %}{% endblock %}
+          </div>
+          <aside class="col-12 ms-sm-2 bg-dark col-sm-auto py-2">
+            {% include 'sidebar.html' %}
+          </aside>
+        </div>
+      </div>
+
     </section>
     
     <!-- Bootstrap -->
