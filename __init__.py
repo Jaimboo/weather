@@ -4,6 +4,8 @@ from flask import Flask
 
 from .config import init_cfg
 
+from livereload import Server
+
 def create_app(test_config=None):
     
     app = Flask(__name__, instance_relative_config=True)
@@ -13,8 +15,6 @@ def create_app(test_config=None):
             init_cfg()
 
     app.config.from_pyfile('config.cfg')
-
-    print(app.config['SECRET_KEY'])
    
     if test_config is None:
         app.config.from_pyfile('config.py', silent=True)
@@ -37,3 +37,7 @@ def create_app(test_config=None):
     app.register_blueprint(api.bp)
 
     return app
+
+app = create_app()
+server = Server(app.wsgi_app)
+server.serve(liveport=35729, host='0.0.0.0', port=5500)
