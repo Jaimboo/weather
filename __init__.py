@@ -4,8 +4,6 @@ from flask import Flask
 
 from .config import init_cfg
 
-from livereload import Server
-
 def create_app(test_config=None):
     
     app = Flask(__name__, instance_relative_config=True)
@@ -39,5 +37,3 @@ def create_app(test_config=None):
     return app
 
 app = create_app()
-server = Server(app.wsgi_app)
-server.serve(liveport=35729, host='0.0.0.0', port=5500)
