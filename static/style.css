@@ -37,3 +37,22 @@ ul{
 #weather-icon{
     height: 120px;
 }
+.page-img{
+    width: 100%;
+    max-width: fit-content;
+}
+.page-item{
+    width: 100%;
+}
+.page-link{
+    width: 100%;
+    background-color: #343a40;
+    color: whitesmoke;
+}
+.act, .page-link:focus, .page-link:hover{
+    color: #343a40;
+    background-color: whitesmoke;
+    outline: 0;
+    box-shadow: initial;
+}
+

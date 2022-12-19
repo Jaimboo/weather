@@ -6,6 +6,7 @@ from weather.auth import login_required
 from weather.db import get_db
 
 import json
+from datetime import datetime
 
 bp = Blueprint('api', __name__)
 
@@ -25,7 +26,7 @@ def days():
             'forecast': []
         }
         for x in data['forecast']['forecastday']:
-            y = {key:x[key] for key in ['date', 'day']}
+            y = {key:x[key] for key in ['date_epoch', 'day', 'hour']}
             d['forecast'].append(y)
             
     return render_template('days.html', data=d)
@@ -39,3 +40,23 @@ def hourly(id):
         }
 
     return render_template('hourly.html', data=d)
+
+@bp.app_template_filter()
+def datetimeformat(value, format='%Y/%m/%d %H:%M'):
+    date = datetime.fromtimestamp(value).strftime(format)
+    return date
+
+@bp.app_template_filter()
+def day(value, format='%d'):
+    date = datetime.fromtimestamp(value).strftime(format)
+    return date
+
+@bp.app_template_filter()
+def day_str(value, format='%a'):
+    date = datetime.fromtimestamp(value).strftime(format)
+    return date
+    
+@bp.app_template_filter()
+def hour(value, format='%H'):
+    date = datetime.fromtimestamp(value).strftime(format)
+    return date
