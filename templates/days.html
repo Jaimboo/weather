@@ -1,0 +1,64 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+    <div class="row">
+        <div class="col">
+            <p>{{ data['location']['name'] }}, {{ data['location']['region'] }}, {{ data['location']['country'] }}</p>
+        </div>
+    </div>
+    <div class="row">
+
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                {% for day in data['forecast'] %}
+                <li class="page-item">
+                    <button class="page-link" type="button" value="{{ loop.index }}">
+                        <img class="page-img" src="{{ day['day']['condition']['icon'] }}" alt="">
+                        <h6>{{ day['date_epoch'] | day }}</h6>
+                        <h6>{{ day['date_epoch'] | day_str }}</h6>
+                    </button>
+                </li>
+                {% endfor %}
+            </ul>
+        </nav>
+        <div class="table-responsive-sm">
+
+            <table class="table table-dark table-striped pages-container" id="pagination">
+            <thead>
+                <tr class="text-center">
+                    <th colspan="3">info</th>
+                    <th>temp</th>
+                    <th>prec</th>
+                    <th>wind</th>
+                    <th>humi</th>
+                </tr>
+            </thead>
+            {% for day in data['forecast'] %}
+            <tbody class="collapse" id="page{{ loop.index }}">
+                {% for hour in day['hour'] %}
+                <tr>
+                    <td>{{ hour['time_epoch'] | hour }}</td>
+                    <td><img src="{{ hour['condition']['icon'] }}" alt=""></td>
+                    <td><h6 class="d-none d-sm-table-cell">{{ hour['condition']['text'] }}</h6></td>
+                    <td>{{ hour['temp_c'] }}°C</td>
+                    {% if hour['will_it_rain'] == 0 %}
+                        <td>none</td>
+                    {% else %}
+                        <td>{{ hour['precip_mm'] }} mm</td>
+                    {% endif %}
+                    <td>{{ hour['wind_kph'] }} {{ hour['wind_dir'] }}</td>
+                    <td>{{ hour['humidity'] }}%</td>
+                    
+                </tr>
+                    {% endfor %}
+                </tbody>
+            {% endfor %}
+            </table>
+            
+        </div>
+    </div>
+{% endblock content %}
+
+{% block script %}
+    <script src="{{ url_for('static', filename='js/pagination.js') }}" }}></script>
+{% endblock script %}
