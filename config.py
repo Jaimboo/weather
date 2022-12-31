@@ -3,7 +3,7 @@ import os
 from flask import Flask, current_app
 
 
-
+# Adding basic info for configuration and creating a file to store them.
 def init_cfg():
     cfg = {
             'SECRET_KEY' : 'dev',

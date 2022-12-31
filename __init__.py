@@ -8,6 +8,8 @@ def create_app(test_config=None):
     
     app = Flask(__name__, instance_relative_config=True)
 
+    # On start the application creates some path if they do not exists yet and setup a basic configuration file.
+    # User have to manually update the cfg file to insert an API_KEY
     if not os.path.exists(os.path.join(app.instance_path, 'config.cfg')):
         with app.app_context():
             init_cfg()
@@ -19,7 +21,7 @@ def create_app(test_config=None):
     
     else:
         app.config.from_mapping(test_config)
-    
+ 
     try:
         os.makedirs(app.instance_path)
     except OSError:

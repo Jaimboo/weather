@@ -11,11 +11,16 @@ bp = Blueprint('auth', __name__, url_prefix='/auth')
 @bp.route('/register', methods=['GET','POST'])
 def register():
     if request.method == 'POST':
+        # Getting username and password
         username = request.form['username']
         password = request.form['password']
+
+        # searching for a database
         db = get_db()
+
         error = None
 
+        # checking for errors
         if not username:
             error = 'Username is required.'
         elif not password:
@@ -23,11 +28,13 @@ def register():
         
         if error is None:
             try:
+                # insert username and passord into the database if no error occur
                 db.execute('INSERT INTO user (username, password) VALUES (?, ?)', (username, generate_password_hash(password)) )
                 db.commit()
             except db.IntegrityError:
                 error = 'User already registered'
             else:
+                # redirect to login view if no error occur
                 return redirect(url_for('auth.login'))
 
         flash(error)
@@ -37,11 +44,17 @@ def register():
 @bp.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
+
+        # getting username and password
         username = request.form['username']
         password = request.form['password']
+        
+        # checking for database
         db = get_db()
+
         error = None
 
+        # checking for error
         if not username:
             error = 'Username is required.'
         if not password:
@@ -53,6 +66,7 @@ def login():
             error = 'Incorrect credentials.'
 
         if error is None:
+            # clearing session and creatinga new one with the requested user
             session.clear()
             session['user_id'] = user['id']
             print(session['user_id'])
