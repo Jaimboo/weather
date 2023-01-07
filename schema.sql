@@ -8,7 +8,8 @@ CREATE TABLE user (
 );
 
 CREATE TABLE favorite (
-    code INTEGER NOT NULL,
+    city TEXT NOT NULL,
     u_id INTEGER NOT NULL,
+    UNIQUE(city, u_id),
     FOREIGN KEY (u_id) REFERENCES user (id)
 );

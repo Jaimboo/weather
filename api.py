@@ -1,4 +1,5 @@
-from flask import Blueprint, redirect, render_template, current_app, request, url_for, session
+from ast import Global
+from flask import Blueprint, g, redirect, render_template, current_app, request, url_for, session
 
 from werkzeug.exceptions import abort
 
@@ -18,9 +19,14 @@ def index():
     # Check if the session has already a city value or add a deafult one
     if session.get('city') is None:
         session['city'] = 'Rome'
+        session['recent'] = [session['city']]
 
     # Update json file if needed
-    get_api(session['city'])
+    if session.get('new') is not None:
+        get_api(session['city'], new = True)
+        session.pop('new', default=None)
+    else:
+        get_api(session['city'])
 
     # Reading the updated json file and creating an object with the necessary information
     with open(os.path.join(current_app.instance_path, 'api_response.json'), 'r') as f:
@@ -62,18 +68,26 @@ def search():
 @bp.route('/search/<string:city>')
 def set_city(city):
     session['city'] = city
+    try:
+        index = session['recent'].index(city)
+        session['recent'].pop(index)
+    except ValueError:
+        pass
+    session['recent'].insert(0, city)
+    if len(session['recent']) > 5:
+        session['recent'].pop(5)
+    session['new'] = True
     return redirect(url_for('api.index'))
 
 
 # Helpers functions
-def get_api(city):
+def get_api(city, new=False):
 
     # The function check if the json file exists and clear the session to starts a new one 
     if os.path.exists(os.path.join(current_app.instance_path, 'api_response.json')) == False:
         session.clear()
-    
     # Check if the session has a last updated or if it is older than 15 minutes, than updated the json.
-    if session.get('last_u') is None or session['last_u'] + timedelta(minutes = 15) < datetime.utcnow().replace(tzinfo=timezone.utc):
+    if session.get('last_u') is None or session['last_u'] + timedelta(minutes = 15) < datetime.utcnow().replace(tzinfo=timezone.utc) or new == True:
         data = requests.get(f'http://api.weatherapi.com/v1/forecast.json?key={current_app.config["SECRET_KEY"]}&q={city}&days=3&aqi=no&alerts=yes')
         session['last_u'] = datetime.utcnow()
         with open(os.path.join(current_app.instance_path, 'api_response.json'), 'w') as f:
@@ -84,6 +98,21 @@ def search_api(q):
     response = requests.get(f'http://api.weatherapi.com/v1/search.json?key={current_app.config["SECRET_KEY"]}&q={q}')
     return response.json()
 
+@bp.route('/favorite')
+@login_required
+def favorite():
+    city = request.args.get('city')
+    add = bool(request.args.get('add'))
+    db = get_db()
+
+    if add == True:
+        db.execute("INSERT INTO favorite (city, u_id) VALUES (?, ?)", (city, session['user_id']))
+        db.commit()
+
+        session['favorite'] = []
+        for row in db.cursor().execute('SELECT city FROM favorite WHERE u_id = ?', (session['user_id'],)).fetchall():
+            session['favorite'].append(row['city'])
+    return redirect(url_for('api.index'))
 
 # jinja template filters
 @bp.app_template_filter()

@@ -1,15 +1,25 @@
         <div>
             <h5>Favorite location</h5>
             <ul>
-                <li class=""><button class="btn btn-dark w-100">Piaggine</button></li>
-                <li class=""><button class="btn btn-dark w-100">London</button></li>
+                {% if session['user_id'] %}
+                    {% if session['favorite']|length == 0 %}
+                        <li class=""><a href="{{ url_for('api.favorite', city=session['city'], add=True) }}" class="btn btn-dark w-100">Add current to favorites</a></li>
+                    {% else %}
+                        {% for city in session['favorite'][:5] %}
+                            <li class=""><a href="{{ url_for('api.set_city', city=session['city']) }}" class="btn btn-dark w-100">{{ city }}</a></li>
+                        {% endfor %}
+                    {% endif %}
+                {% else %}
+                    <li class=""><a href="{{ url_for('auth.login') }}" class="btn btn-dark w-100">Login to use favorites</a></li>
+                {% endif %}
             </ul>
         </div>
 
         <div>
             <h5>Recent location</h5>
             <ul>
-                <li class=""><button class="btn btn-dark w-100">Piaggine</button></li>
-                <li class=""><button class="btn btn-dark w-100">London</button></li>
+                {% for city in session['recent'] %}
+                    <li><a href="{{ url_for('api.set_city', city=city) }}" class="btn btn-dark w-100">{{ city }}</a></li>
+                {% endfor %}
             </ul>
         </div>
