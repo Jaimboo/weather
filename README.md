@@ -42,8 +42,8 @@ The design of the project is poorly treated and use the basics of [bootstrap 5](
 
  ## **USAGE**
  1. Clone the repository.
- 1. Run the command `pip install -r requirements.txt`.
- 1. Once all the dependencies have been installed, run the command `flask --app weather run` and than stop it.
+ 1. Run the command `pip install -r requirements.txt` from the inside of the cloned repository path.
+ 1. Once all the dependencies have been installed, run the command `flask --app weather run` from the project folder and than stop it.
  1. Go to [WeatherApi](https://www.weatherapi.com/signup.aspx) signup page and register an account.
  1. [Login](https://www.weatherapi.com/login.aspx), if not automatically redirected, and access to the personal page.
  1. Copy the API key.
