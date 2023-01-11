@@ -102,16 +102,22 @@ def search_api(q):
 @login_required
 def favorite():
     city = request.args.get('city')
-    add = bool(request.args.get('add'))
+    add = request.args.get('add')
     db = get_db()
 
-    if add == True:
+    if add == "True":
         db.execute("INSERT INTO favorite (city, u_id) VALUES (?, ?)", (city, session['user_id']))
         db.commit()
 
-        session['favorite'] = []
-        for row in db.cursor().execute('SELECT city FROM favorite WHERE u_id = ?', (session['user_id'],)).fetchall():
-            session['favorite'].append(row['city'])
+        
+    elif add == "False":
+        db.execute("DELETE FROM favorite WHERE city = ? AND u_id = ?", (city, session['user_id']))
+        db.commit()
+    
+    session['favorite'] = []
+    for row in db.cursor().execute('SELECT city FROM favorite WHERE u_id = ?', (session['user_id'],)).fetchall():
+        session['favorite'].append(row['city'])
+
     return redirect(url_for('api.index'))
 
 # jinja template filters

@@ -1,5 +1,5 @@
-        <div>
-            <h5>Favorite location</h5>
+        <div class="h-50">
+            <h5 class="text-center">Favorite location</h5>
             <ul>
                 {% if session['user_id'] %}
                     {% if session['favorite']|length == 0 %}
@@ -15,8 +15,8 @@
             </ul>
         </div>
 
-        <div>
-            <h5>Recent location</h5>
+        <div class="h-50">
+            <h5 class="text-center">Recent location</h5>
             <ul>
                 {% for city in session['recent'] %}
                     <li><a href="{{ url_for('api.set_city', city=city) }}" class="btn btn-dark w-100">{{ city }}</a></li>

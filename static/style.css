@@ -1,58 +1,83 @@
-.title{
-    color: orange !important;
-}
 
-.nav-link{
+:root {
+    --color1: #1B1A17;
+    --color1-l: hwb(48 10% 89%);
+    --color2: #F0A500;
+    --color3: #E45826;
+    --color4: #E6D5B8;
+}
+body {
+    background-color: var(--color1-l);
+}
+.title {
+    color: var(--color2) !important;
+}
+.navbar, #sidebar, #main{
+    background-color: var(--color1);
+    border-style: solid;
+    border: var(--color4);
+    border-width: 1px;
+    border-radius: 5px;
+}
+.nav-link {
     color: whitesmoke;
 }
 
-.nav-link:hover{
-    color: orange;
+.nav-link:hover {
+    color: var(--color2);
 }
 
-.search{
-    color: orange;
-    border-color: orange;
+.search {
+    color: var(--color2);
+    border-color: var(--color2);
 }
 
-.search:hover{
+.search:hover {
     color: #343a40;
-    background-color: orange;
+    background-color: var(--color2);
 }
 
-.navbar-toggler .bi-list{
+.navbar-toggler .bi-list {
     color: whitesmoke;
 }
-.widget-list{
+
+.widget-list {
     list-style: none;
     margin: 0;
     padding: 0;
 }
-ul{
+
+ul {
     list-style: none;
     margin: 0;
     padding: 0;
     width: 100%;
 }
-#weather-icon{
+
+#weather-icon {
     height: 120px;
 }
-.page-img{
+
+.page-img {
     width: 100%;
     max-width: fit-content;
 }
-.page-item{
+
+.page-item {
     width: 100%;
 }
-.page-link{
+
+.page-link {
     width: 100%;
     background-color: #343a40;
     color: whitesmoke;
 }
-.act, .page-link:focus, .page-link:hover{
+
+.act,
+.page-link:focus,
+.page-link:hover {
     color: #343a40;
     background-color: whitesmoke;
     outline: 0;
     box-shadow: initial;
 }
-

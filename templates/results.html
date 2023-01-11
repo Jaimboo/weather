@@ -1,16 +1,16 @@
 {% extends 'layout.html' %}
 
 {% block content %}
-    {% for q in data %}
-    <ul>
-        <a href="{{ url_for('api.set_city', city=q['name']) }}">
-            <li>
-                <h5>{{ q['name'] }}, {{ q['region'] }}, {{ q['country'] }}</h5>
-                <h6>{{ q['lat'] }}/{{ q['lon'] }}</h6>
-            </li>
-        </a>
-    </ul>
-    {% endfor %}
+{% for q in data %}
+<ul>
+    <a href="{{ url_for('api.set_city', city=q['name']) }}">
+        <li>
+            <h5>{{ q['name'] }}, {{ q['region'] }}, {{ q['country'] }}</h5>
+            <h6>{{ q['lat'] }}/{{ q['lon'] }}</h6>
+        </li>
+    </a>
+</ul>
+{% endfor %}
 {% endblock content %}
 
 {% block script %}
