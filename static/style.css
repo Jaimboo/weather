@@ -1,30 +1,36 @@
-
 :root {
     --color1: #1B1A17;
     --color1-l: hwb(48 10% 89%);
     --color2: #F0A500;
     --color3: #E45826;
-    --color4: #E6D5B8;
+    --color4: #ebebeb;
+    --color4-lo: #ebebeb69;
 }
+
 body {
-    background-color: var(--color1-l);
+    background-color: var(--color4);
 }
+
 .title {
     color: var(--color2) !important;
 }
-.navbar, #sidebar, #main{
+
+.navbar,
+#sidebar,
+.widget {
     background-color: var(--color1);
     border-style: solid;
-    border: var(--color4);
-    border-width: 1px;
-    border-radius: 5px;
 }
+
 .nav-link {
     color: whitesmoke;
 }
 
 .nav-link:hover {
     color: var(--color2);
+}
+.active {
+    color: var(--color2) !important;
 }
 
 .search {
@@ -45,6 +51,20 @@ body {
     list-style: none;
     margin: 0;
     padding: 0;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+.widget-list p{
+    margin: 0;
+}
+.widget-list li{
+    display: inline-flex;
+    flex-direction: row;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--color4-lo);
+    opacity: 10;
 }
 
 ul {
@@ -80,4 +100,12 @@ ul {
     background-color: whitesmoke;
     outline: 0;
     box-shadow: initial;
+}
+#main-temp {
+    letter-spacing: -0.4rem;
+    font-size: 5rem;
+    font-family: sans-serif;
+}
+#weather-icon{
+    margin-right:-26px
 }

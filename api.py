@@ -1,5 +1,5 @@
 from ast import Global
-from flask import Blueprint, g, redirect, render_template, current_app, request, url_for, session
+from flask import flash, Blueprint, g, redirect, render_template, current_app, request, url_for, session
 
 from werkzeug.exceptions import abort
 
@@ -34,8 +34,11 @@ def index():
         d = {
             'location': data['location'],
             'current': data['current'],
-            'alerts': data['alerts']
         }
+        try:
+            flash(data['alerts']['alert'][0]['event'], 'danger')
+        except IndexError:
+            pass
     return render_template('index.html', data=d)
 
 

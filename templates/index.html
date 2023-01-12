@@ -1,11 +1,75 @@
 {% extends 'layout.html' %}
 
-{% block header %}
-{% block title %}{% endblock %}
-{% endblock %}
-
 {% block content %}
-<div id="main" class="col-12 col-sm py-2">
+<div class="col-12 col-md py-2 widget">
+  <div class="row">
+    <div class="col">
+      <h6 id="location-name">{{ data["location"]['name'] }}, {{ data['location']['region'] }},
+        {{data['location']['country']}}</h6>
+    </div>
+    <div class="col-auto">
+      {% if session['city'] in session['favorite'] %}
+      <a href="{{ url_for('api.favorite', city=session['city'], add=False) }}" class="btn btn-dark fav-remove"
+        title="Remove from favorites"><i class="bi bi-star-fill"></i></a>
+      {% else %}
+      <a href="{{ url_for('api.favorite', city=session['city'], add=True) }}" class="btn btn-dark fav-add "
+        title="Add to favorites"><i class="bi bi-star"></i></a>
+      {% endif %}
+    </div>
+
+  </div>
+
+  <div class="row justify-content-center">
+    <div class="col-auto p-0">
+      <img id="weather-icon" src="{{ data['current']['condition']['icon'] }}"
+        alt="{{ data['current']['condition']['text'] }}">
+    </div>
+    <div class="col-auto p-0">
+      <p id="main-temp">{{ data['current']['temp_c'] | int }}°</p>
+    </div>
+  </div>
+
+  <div class="row justify-content-between">
+    <div class="col-auto">
+      <h6 id="weather-description">{{ data['current']['condition']['text'] }}</h6>
+    </div>
+    <div class="col-auto">
+
+    </div>
+
+  </div>
+</div>
+
+
+<div class="container col-12 col-md py-2 widget">
+  <ul class="row widget-list">
+    <li>
+      <p id="main-feels_like">Feels</p>
+      <p>{{ data['current']['feelslike_c'] | int }} C°</p>
+    </li>
+    <li>
+      <p id="main-pressure">Pressure</p>
+      <p>{{ data['current']['pressure_mb'] }} hPa</p>
+    </li>
+    <li>
+      <p id="main-humidity">Humidity</p>
+      <p>{{ data['current']['humidity'] }}%</p>
+    </li>
+    <li>
+      <p id="wind-speed">Wind</p>
+      <p>{{ data['current']['wind_kph'] }} kph</p>
+    </li>
+    <li>
+      <p id="clouds-all">Cloudiness</p>
+      <p>{{ data['current']['cloud'] }}%</p>
+    </li>
+  </ul>
+</div>
+
+
+
+
+<!-- <div id="main" class="col-12 col-sm py-2">
 
   <div class="row">
 
@@ -65,22 +129,17 @@
 
       <div class="row">
         <div class="col d-flex justify-content-between">
-          <!-- NEED IF -->
-          {% if data['alerts']['alert'] %}
-          <p id="alerts">{{ data['alerts']['alert'][0]['event'] }}</p>
-          {% else %}
-          <p id="alerts">No Alerts</p>
-          {% endif %}
+
           <p>Powered by <a href="https://www.weatherapi.com/" title="Free Weather API">WeatherAPI.com</a></p>
         </div>
       </div>
 
     </div>
   </div>
-</div>
+</div> -->
 
-<aside id="sidebar" class="col-12 ms-sm-2 col-sm-auto py-2">
+<!-- <aside id="sidebar" class="col-12 ms-sm-2 col-sm-auto py-2">
   {% include 'sidebar.html' %}
-</aside>
+</aside> -->
 
 {% endblock %}
