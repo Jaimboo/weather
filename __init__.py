@@ -1,6 +1,8 @@
 import os
 
-from flask import Flask
+from flask import Flask, session
+
+from flask_session import Session
 
 from .config import init_cfg
 
@@ -27,6 +29,8 @@ def create_app(test_config=None):
     except OSError:
         pass
 
+    Session(app)
+
     from . import db
     db.init_app(app)
 
@@ -37,5 +41,6 @@ def create_app(test_config=None):
     app.register_blueprint(api.bp)
 
     return app
+
 
 app = create_app()

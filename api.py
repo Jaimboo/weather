@@ -1,5 +1,5 @@
 from ast import Global
-from flask import Blueprint, g, redirect, render_template, current_app, request, url_for, session
+from flask import Blueprint, g, redirect, render_template, current_app, request, url_for, session, abort, flash
 
 from werkzeug.exceptions import abort
 
@@ -26,37 +26,17 @@ def index():
         get_api(session['city'], new = True)
         session.pop('new', default=None)
     else:
-        get_api(session['city'])
+        get_api(session['city'])  
 
-    # Reading the updated json file and creating an object with the necessary information
-    with open(os.path.join(current_app.instance_path, 'api_response.json'), 'r') as f:
-        data = json.load(f)
-        d = {
-            'location': data['location'],
-            'current': data['current'],
-            'alerts': data['alerts']
-        }
-    return render_template('index.html', data=d)
+    return render_template('index.html')
 
 
 @bp.route('/days')
 def days():
     # Update json file if needed
     get_api(session['city'])
-
-    # Reading json file and extracting only the needed information
-    with open(os.path.join(current_app.instance_path, 'api_response.json'), 'r') as f:
-        data = json.load(f)
-
-        d = {
-            'location': data['location'],
-            'forecast': []
-        }
-        for x in data['forecast']['forecastday']:
-            y = {key:x[key] for key in ['date_epoch', 'day', 'hour']}
-            d['forecast'].append(y)
             
-    return render_template('days.html', data=d)
+    return render_template('days.html')
 
 
 @bp.route('/search', methods=['GET'])
@@ -83,16 +63,12 @@ def set_city(city):
 # Helpers functions
 def get_api(city, new=False):
 
-    # The function check if the json file exists and clear the session to starts a new one 
-    if os.path.exists(os.path.join(current_app.instance_path, 'api_response.json')) == False:
-        session.clear()
     # Check if the session has a last updated or if it is older than 15 minutes, than updated the json.
     if session.get('last_u') is None or session['last_u'] + timedelta(minutes = 15) < datetime.utcnow().replace(tzinfo=timezone.utc) or new == True:
         data = requests.get(f'http://api.weatherapi.com/v1/forecast.json?key={current_app.config["SECRET_KEY"]}&q={city}&days=3&aqi=no&alerts=yes')
+        session['data'] = data.json()
+        print(session['data'])
         session['last_u'] = datetime.utcnow()
-        with open(os.path.join(current_app.instance_path, 'api_response.json'), 'w') as f:
-            f.truncate()
-            json.dump(data.json(), f)
 
 def search_api(q):
     response = requests.get(f'http://api.weatherapi.com/v1/search.json?key={current_app.config["SECRET_KEY"]}&q={q}')
