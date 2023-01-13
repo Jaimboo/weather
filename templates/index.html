@@ -42,28 +42,52 @@
 
 
 <div class="container col-12 col-md py-2 widget">
-  <ul class="row widget-list">
-    <li>
-      <p id="main-feels_like">Feels</p>
-      <p>{{ session['data']['current']['feelslike_c'] | int }} C°</p>
-    </li>
-    <li>
-      <p id="main-pressure">Pressure</p>
-      <p>{{ session['data']['current']['pressure_mb'] }} hPa</p>
-    </li>
-    <li>
-      <p id="main-humidity">Humidity</p>
-      <p>{{ session['data']['current']['humidity'] }}%</p>
-    </li>
-    <li>
-      <p id="wind-speed">Wind</p>
-      <p>{{ session['data']['current']['wind_kph'] }} kph</p>
-    </li>
-    <li>
-      <p id="clouds-all">Cloudiness</p>
-      <p>{{ session['data']['current']['cloud'] }}%</p>
-    </li>
-  </ul>
+  <div class="row h-100">
+    <div class="col-md">
+      <ul class="widget-list">
+        <li>
+          <p id="main-feels_like">Date</p>
+          <p>{{ session['data']['current']['last_updated_epoch'] | }}</p>
+        </li>
+        <li>
+          <p id="main-pressure">Precipitation</p>
+          <p>{{ session['data']['current']['precip_mm'] }} mm</p>
+        </li>
+        <li>
+          <p id="main-humidity">Visibility</p>
+          <p>{{ session['data']['current']['vis_km'] }} km</p>
+        </li>
+        <li>
+          <p id="clouds-all">Cloudiness</p>
+          <p>{{ session['data']['current']['cloud'] }}%</p>
+        </li>
+      </ul>
+
+    </div>
+    <div class="col-md">
+
+
+      <ul class="widget-list">
+        <li>
+          <p id="main-feels_like">Feels</p>
+          <p>{{ session['data']['current']['feelslike_c'] | int }} C°</p>
+        </li>
+        <li>
+          <p id="main-pressure">Pressure</p>
+          <p>{{ session['data']['current']['pressure_mb'] }} hPa</p>
+        </li>
+        <li>
+          <p id="main-humidity">Humidity</p>
+          <p>{{ session['data']['current']['humidity'] }}%</p>
+        </li>
+        <li>
+          <p id="wind-speed">Wind</p>
+          <p>{{ session['data']['current']['wind_dir'] }} {{ session['data']['current']['wind_kph'] }} kph</p>
+        </li>
+        
+      </ul>
+    </div>
+  </div>
 </div>
 
 
