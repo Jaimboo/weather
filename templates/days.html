@@ -5,14 +5,14 @@
 
     <div class="row">
         <div class="col">
-            <p>{{ data['location']['name'] }}, {{ data['location']['region'] }}, {{ data['location']['country'] }}</p>
+            <p>{{ session['data']['location']['name'] }}, {{ session['data']['location']['region'] }}, {{ session['data']['location']['country'] }}</p>
         </div>
     </div>
     <div class="row">
 
         <nav aria-label="Page navigation example">
             <ul class="pagination">
-                {% for day in data['forecast'] %}
+                {% for day in session['data']['forecast']['forecastday'] %}
                 <li class="page-item">
                     <button class="page-link" type="button" value="{{ loop.index }}">
                         <img class="page-img" src="{{ day['day']['condition']['icon'] }}" alt="">
@@ -35,7 +35,7 @@
                         <th>humi</th>
                     </tr>
                 </thead>
-                {% for day in data['forecast'] %}
+                {% for day in session['data']['forecast']['forecastday'] %}
                 <tbody class="collapse" id="page{{ loop.index }}">
                     {% for hour in day['hour'] %}
                     <tr>

@@ -4,8 +4,8 @@
 <div class="col-12 col-md py-2 widget">
   <div class="row">
     <div class="col">
-      <h6 id="location-name">{{ data["location"]['name'] }}, {{ data['location']['region'] }},
-        {{data['location']['country']}}</h6>
+      <h6 id="location-name">{{ session['data']["location"]['name'] }}, {{ session['data']['location']['region'] }},
+        {{session['data']['location']['country']}}</h6>
     </div>
     <div class="col-auto">
       {% if session['city'] in session['favorite'] %}
@@ -21,17 +21,17 @@
 
   <div class="row justify-content-center">
     <div class="col-auto p-0">
-      <img id="weather-icon" src="{{ data['current']['condition']['icon'] }}"
-        alt="{{ data['current']['condition']['text'] }}">
+      <img id="weather-icon" src="{{ session['data']['current']['condition']['icon'] }}"
+        alt="{{ session['data']['current']['condition']['text'] }}">
     </div>
     <div class="col-auto p-0">
-      <p id="main-temp">{{ data['current']['temp_c'] | int }}°</p>
+      <p id="main-temp">{{ session['data']['current']['temp_c'] | int }}°</p>
     </div>
   </div>
 
   <div class="row justify-content-between">
     <div class="col-auto">
-      <h6 id="weather-description">{{ data['current']['condition']['text'] }}</h6>
+      <h6 id="weather-description">{{ session['data']['current']['condition']['text'] }}</h6>
     </div>
     <div class="col-auto">
 
@@ -45,23 +45,23 @@
   <ul class="row widget-list">
     <li>
       <p id="main-feels_like">Feels</p>
-      <p>{{ data['current']['feelslike_c'] | int }} C°</p>
+      <p>{{ session['data']['current']['feelslike_c'] | int }} C°</p>
     </li>
     <li>
       <p id="main-pressure">Pressure</p>
-      <p>{{ data['current']['pressure_mb'] }} hPa</p>
+      <p>{{ session['data']['current']['pressure_mb'] }} hPa</p>
     </li>
     <li>
       <p id="main-humidity">Humidity</p>
-      <p>{{ data['current']['humidity'] }}%</p>
+      <p>{{ session['data']['current']['humidity'] }}%</p>
     </li>
     <li>
       <p id="wind-speed">Wind</p>
-      <p>{{ data['current']['wind_kph'] }} kph</p>
+      <p>{{ session['data']['current']['wind_kph'] }} kph</p>
     </li>
     <li>
       <p id="clouds-all">Cloudiness</p>
-      <p>{{ data['current']['cloud'] }}%</p>
+      <p>{{ session['data']['current']['cloud'] }}%</p>
     </li>
   </ul>
 </div>
@@ -77,8 +77,8 @@
 
       <div class="row">
         <div class="col text-start m-auto">
-          <h5 id="location-name">{{ data["location"]['name'] }}, {{ data['location']['region'] }},
-            {{data['location']['country']}}</h5>
+          <h5 id="location-name">{{ session['data']['location']['name'] }}, {{ session['data']['location']['region'] }},
+            {{session['data']['location']['country']}}</h5>
         </div>
         <div class="col-auto">
           {% if session['city'] in session['favorite'] %}
@@ -94,33 +94,33 @@
       <div class="row text-center justify-content-evenly text-md-start align-items-center">
 
         <div class="col-12 col-md-auto">
-          <img id="weather-icon" src="{{ data['current']['condition']['icon'] }}"
-            alt="{{ data['current']['condition']['text'] }}">
+          <img id="weather-icon" src="{{ session['data']['current']['condition']['icon'] }}"
+            alt="{{ session['data']['current']['condition']['text'] }}">
         </div>
         <div class="col-auto d-flex gap-3">
           <ul class="widget-list">
             <li>
-              <p id="weather-description">{{ data['current']['condition']['text'] }}</p>
+              <p id="weather-description">{{ session['data']['current']['condition']['text'] }}</p>
             </li>
             <li>
-              <p id="main-temp">Temperature: {{ data['current']['temp_c'] }} C°</p>
+              <p id="main-temp">Temperature: {{ session['data']['current']['temp_c'] }} C°</p>
             </li>
             <li>
-              <p id="main-feels_like">Feels: {{ data['current']['feelslike_c'] }} C°</p>
+              <p id="main-feels_like">Feels: {{ session['data']['current']['feelslike_c'] }} C°</p>
             </li>
           </ul>
           <ul class="widget-list">
             <li>
-              <p id="main-pressure">Pressure: {{ data['current']['pressure_mb'] }} hPa</p>
+              <p id="main-pressure">Pressure: {{ session['data']['current']['pressure_mb'] }} hPa</p>
             </li>
             <li>
-              <p id="main-humidity">Humidity: {{ data['current']['humidity'] }}%</p>
+              <p id="main-humidity">Humidity: {{ session['data']['current']['humidity'] }}%</p>
             </li>
             <li>
-              <p id="wind-speed">Wind: {{ data['current']['wind_kph'] }} kph</p>
+              <p id="wind-speed">Wind: {{ session['data']['current']['wind_kph'] }} kph</p>
             </li>
             <li>
-              <p id="clouds-all">Cloudiness: {{ data['current']['cloud'] }}%</p>
+              <p id="clouds-all">Cloudiness: {{ session['data']['current']['cloud'] }}%</p>
             </li>
           </ul>
         </div>
