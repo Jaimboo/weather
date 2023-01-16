@@ -31,13 +31,18 @@
     {% endif %}
   {% endwith %}
 
-  <div class="container text-light mt-2">
-    <div class="row justify-content-between gap-2">
-      {% block content %}{% endblock %}
+  {% if session['data']['alerts']['alert'] | length > 0 %}
+    {% for alert in session['data']['alerts']['alert'] %}
+      <div class="container px-0">
+      <h6 class="alert alert-danger" role="alert">{{ alert }}</h6>
     </div>
+    {% endfor %}
+  {% endif %}
+  <div class="container text-light mt-2">
+      {% block content %}{% endblock %}
   </div>
 
-  </section>
+  {% include 'footer.html' %}
 
   <!-- Bootstrap -->
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"

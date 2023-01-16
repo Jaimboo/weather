@@ -1,6 +1,8 @@
 {% extends 'layout.html' %}
 
 {% block content %}
+<div class="row justify-content-between gap-2">
+
 <div class="col-12 col-md py-2 widget">
   <div class="row">
     <div class="col">
@@ -9,10 +11,10 @@
     </div>
     <div class="col-auto">
       {% if session['city'] in session['favorite'] %}
-      <a href="{{ url_for('api.favorite', city=session['city'], add=False) }}" class="btn btn-dark fav-remove"
+      <a href="{{ url_for('api.favorite', city=session['city'], add=False) }}" class="btn fav-remove"
         title="Remove from favorites"><i class="bi bi-star-fill"></i></a>
       {% else %}
-      <a href="{{ url_for('api.favorite', city=session['city'], add=True) }}" class="btn btn-dark fav-add "
+      <a href="{{ url_for('api.favorite', city=session['city'], add=True) }}" class="btn fav-add "
         title="Add to favorites"><i class="bi bi-star"></i></a>
       {% endif %}
     </div>
@@ -41,13 +43,13 @@
 </div>
 
 
-<div class="container col-12 col-md py-2 widget">
+<div class="container col-12 col-md py-3 widget">
   <div class="row h-100">
     <div class="col-md">
       <ul class="widget-list">
         <li>
           <p id="main-feels_like">Date</p>
-          <p>{{ session['data']['current']['last_updated_epoch'] | }}</p>
+          <p>{{ session['data']['current']['last_updated_epoch'] | date }}</p>
         </li>
         <li>
           <p id="main-pressure">Precipitation</p>
@@ -90,6 +92,37 @@
   </div>
 </div>
 
+</div>
+
+<div class="row justify-content-between gap-2 widget mt-2">
+  <div id="favorites-container" class="col-sm py-2">
+    <h5 class="text-center">Favorites locations</h5>
+    <ul>
+        {% if session['user_id'] %}
+        {% if session['favorite']|length == 0 %}
+        <li class=""><a href="{{ url_for('api.favorite', city=session['city'], add=True) }}"
+                class="btn">Add current to favorites</a></li>
+        {% else %}
+        {% for city in session['favorite'][:5] %}
+        <li class=""><a href="{{ url_for('api.set_city', city=session['city']) }}" class="btn">{{ city
+                }}</a></li>
+        {% endfor %}
+        {% endif %}
+        {% else %}
+        <li class=""><a href="{{ url_for('auth.login') }}" class="btn ">Login to use favorites</a></li>
+        {% endif %}
+    </ul>
+  </div>
+  
+  <div id="recent-container" class="col-sm py-2">
+    <h5 class="text-center">Recent locations</h5>
+    <ul>
+        {% for city in session['recent'] %}
+        <li><a href="{{ url_for('api.set_city', city=city) }}" class="btn ">{{ city }}</a></li>
+        {% endfor %}
+    </ul>
+  </div>
+</div>
 
 
 
@@ -106,10 +139,10 @@
         </div>
         <div class="col-auto">
           {% if session['city'] in session['favorite'] %}
-          <a href="{{ url_for('api.favorite', city=session['city'], add=False) }}" class="btn btn-dark fav-remove"
+          <a href="{{ url_for('api.favorite', city=session['city'], add=False) }}" class="btn  fav-remove"
             title="Remove from favorites"><i class="bi bi-star-fill"></i></a>
           {% else %}
-          <a href="{{ url_for('api.favorite', city=session['city'], add=True) }}" class="btn btn-dark fav-add "
+          <a href="{{ url_for('api.favorite', city=session['city'], add=True) }}" class="btn  fav-add "
             title="Add to favorites"><i class="bi bi-star"></i></a>
           {% endif %}
         </div>

@@ -1,33 +1,41 @@
 :root {
     --color1: #1B1A17;
-    --color1-l: hwb(48 10% 89%);
+    --color1-l: hwb(60 16% 83%);
     --color2: #F0A500;
     --color3: #E45826;
     --color4: #ebebeb;
-    --color4-lo: #ebebeb69;
+    --color4-l: #ebebeb69;
 }
 
 body {
     background-color: var(--color4);
+    color: var(--color4);
 }
-
+.nav-link{
+    color: var(--color4);
+}
 .title {
     color: var(--color2) !important;
 }
 
-.navbar,
-#sidebar,
-.widget {
-    background-color: var(--color1);
-    border-style: solid;
+#footer div .nav-link{
+    color: var(--color4-lo) ;
 }
 
-.nav-link {
-    color: whitesmoke;
+.navbar,
+#footer
+{
+    background-color: var(--color1);
 }
+
+.widget {
+    background-color: white;
+    color: var(--color1);
+}
+
 
 .nav-link:hover {
-    color: var(--color2);
+    color: var(--color2) !important;
 }
 .active {
     color: var(--color2) !important;
@@ -38,13 +46,26 @@ body {
     border-color: var(--color2);
 }
 
-.search:hover {
-    color: #343a40;
+[class*=fav]{
+    color: var(--color2);
+    transition: ease transform 200ms;
+}
+
+[class*=fav]:hover{
+    transform: scale(1.2);
+    transform-origin: center;
+    color: var(--color2);
+
+}
+
+.search:hover, #favorites-container a.btn:hover, #recent-container a.btn:hover{
+    color: var(--color1);
     background-color: var(--color2);
+    border-color: var(--color2);
 }
 
 .navbar-toggler .bi-list {
-    color: whitesmoke;
+    color: var(--color4);
 }
 
 .widget-list {
@@ -54,7 +75,6 @@ body {
     height: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: space-evenly;
 }
 .widget-list p{
     margin: 0;
@@ -64,8 +84,14 @@ body {
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: space-between;
-    border-bottom: 1px solid var(--color4-lo);
+    border-bottom: 1px solid var(--color1-l);
     opacity: 10;
+    margin: 0;
+    padding: 0.5rem 0;
+}
+
+.widget-list li:last-child {
+    border: none;
 }
 
 ul {
@@ -77,6 +103,7 @@ ul {
 
 #weather-icon {
     height: 120px;
+    margin-right:-14px;
 }
 
 .page-img {
@@ -91,14 +118,14 @@ ul {
 .page-link {
     width: 100%;
     background-color: #343a40;
-    color: whitesmoke;
+    color: var(--color4);
 }
 
 .act,
 .page-link:focus,
 .page-link:hover {
     color: #343a40;
-    background-color: whitesmoke;
+    background-color: var(--color4);
     outline: 0;
     box-shadow: initial;
 }
@@ -107,6 +134,15 @@ ul {
     font-size: 5rem;
     font-family: sans-serif;
 }
-#weather-icon{
-    margin-right:-26px
+
+#favorites-container a.btn, #recent-container a.btn{
+    width: 50%;
+    display: block;
+    margin: 0.5rem auto;
+    color: var(--color4);
+    background-color: var(--color1-l);
+}
+
+#favorites-container a.btn:hover, #recent-container a.btn:hover{
+
 }
