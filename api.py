@@ -63,7 +63,7 @@ def set_city(city):
 # Helpers functions
 def get_api(city, new=False):
     # Check if the session has a last updated or if it is older than 15 minutes, than updated the json.
-    if session.get('last_u') is None or session.get('last_u') + timedelta(minutes = 15) < datetime.utcnow().replace(tzinfo=timezone.utc) or new == True:
+    if session.get('last_u') is None or session.get('last_u') + timedelta(minutes = 60) < datetime.utcnow().replace(tzinfo=timezone.utc) or new == True:
         data = requests.get(f'http://api.weatherapi.com/v1/forecast.json?key={current_app.config["SECRET_KEY"]}&q={city}&days=3&aqi=no&alerts=yes')
         print('updated')
         session['data'] = data.json()
@@ -97,7 +97,7 @@ def favorite():
 
 # jinja template filters
 @bp.app_template_filter()
-def datetimeformat(value, format='%Y/%m/%d %H:%M'):
+def datetimeformat(value, format='%Y/%m/%d %H-%M'):
     date = datetime.fromtimestamp(value).strftime(format)
     return date
 
@@ -111,6 +111,11 @@ def day_str(value, format='%a'):
     date = datetime.fromtimestamp(value).strftime(format)
     return date
     
+@bp.app_template_filter()
+def date(value, format='%d/%m %H:%M'):
+    date = datetime.fromtimestamp(value).strftime(format)
+    return date
+
 @bp.app_template_filter()
 def hour(value, format='%H'):
     date = datetime.fromtimestamp(value).strftime(format)

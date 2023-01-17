@@ -21,6 +21,7 @@
 
 <body>
   {% include 'navbar.html' %}
+
   {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
     <div class="container px-0">
@@ -31,14 +32,8 @@
     {% endif %}
   {% endwith %}
 
-  {% if session['data']['alerts']['alert'] | length > 0 %}
-    {% for alert in session['data']['alerts']['alert'] %}
-      <div class="container px-0">
-      <h6 class="alert alert-danger" role="alert">{{ alert }}</h6>
-    </div>
-    {% endfor %}
-  {% endif %}
-  <div class="container text-light mt-2">
+  
+  <div class="container text-light">
       {% block content %}{% endblock %}
   </div>
 

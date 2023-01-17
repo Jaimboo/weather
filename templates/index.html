@@ -1,96 +1,121 @@
 {% extends 'layout.html' %}
 
 {% block content %}
+
+<div class="row py-2">
+  <a href="#alerts-modal" class="btn-alerts" data-bs-toggle="modal">
+    <i class="bi bi-exclamation-triangle-fill"></i>
+    <h6>{{ session['data']['alerts']['alert'] | length }}</h6>
+    <span class="v-separator"></span>
+    <h6>Click here to show alerts</h6>
+  </a>
+
+  <div class="modal fade" id="alerts-modal" tabindex="-1" aria-labelledby="alerts-modal-label" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="alerts-modal-label">Modal title</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          ...
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
 <div class="row justify-content-between gap-2">
 
-<div class="col-12 col-md py-2 widget">
-  <div class="row">
-    <div class="col">
-      <h6 id="location-name">{{ session['data']["location"]['name'] }}, {{ session['data']['location']['region'] }},
-        {{session['data']['location']['country']}}</h6>
-    </div>
-    <div class="col-auto">
-      {% if session['city'] in session['favorite'] %}
-      <a href="{{ url_for('api.favorite', city=session['city'], add=False) }}" class="btn fav-remove"
-        title="Remove from favorites"><i class="bi bi-star-fill"></i></a>
-      {% else %}
-      <a href="{{ url_for('api.favorite', city=session['city'], add=True) }}" class="btn fav-add "
-        title="Add to favorites"><i class="bi bi-star"></i></a>
-      {% endif %}
-    </div>
-
-  </div>
-
-  <div class="row justify-content-center">
-    <div class="col-auto p-0">
-      <img id="weather-icon" src="{{ session['data']['current']['condition']['icon'] }}"
-        alt="{{ session['data']['current']['condition']['text'] }}">
-    </div>
-    <div class="col-auto p-0">
-      <p id="main-temp">{{ session['data']['current']['temp_c'] | int }}°</p>
-    </div>
-  </div>
-
-  <div class="row justify-content-between">
-    <div class="col-auto">
-      <h6 id="weather-description">{{ session['data']['current']['condition']['text'] }}</h6>
-    </div>
-    <div class="col-auto">
+  <div class="col-12 col-md py-2 widget">
+    <div class="row">
+      <div class="col">
+        <h6 id="location-name">{{ session['data']["location"]['name'] }}, {{ session['data']['location']['region'] }},
+          {{session['data']['location']['country']}}</h6>
+      </div>
+      <div class="col-auto">
+        {% if session['city'] in session['favorite'] %}
+        <a href="{{ url_for('api.favorite', city=session['city'], add=False) }}" class="btn fav-remove"
+          title="Remove from favorites"><i class="bi bi-star-fill"></i></a>
+        {% else %}
+        <a href="{{ url_for('api.favorite', city=session['city'], add=True) }}" class="btn fav-add "
+          title="Add to favorites"><i class="bi bi-star"></i></a>
+        {% endif %}
+      </div>
 
     </div>
 
-  </div>
-</div>
-
-
-<div class="container col-12 col-md py-3 widget">
-  <div class="row h-100">
-    <div class="col-md">
-      <ul class="widget-list">
-        <li>
-          <p id="main-feels_like">Date</p>
-          <p>{{ session['data']['current']['last_updated_epoch'] | date }}</p>
-        </li>
-        <li>
-          <p id="main-pressure">Precipitation</p>
-          <p>{{ session['data']['current']['precip_mm'] }} mm</p>
-        </li>
-        <li>
-          <p id="main-humidity">Visibility</p>
-          <p>{{ session['data']['current']['vis_km'] }} km</p>
-        </li>
-        <li>
-          <p id="clouds-all">Cloudiness</p>
-          <p>{{ session['data']['current']['cloud'] }}%</p>
-        </li>
-      </ul>
-
+    <div class="row justify-content-center">
+      <div class="col-auto p-0">
+        <img id="weather-icon" src="{{ session['data']['current']['condition']['icon'] }}"
+          alt="{{ session['data']['current']['condition']['text'] }}">
+      </div>
+      <div class="col-auto p-0">
+        <p id="main-temp">{{ session['data']['current']['temp_c'] | int }}°</p>
+      </div>
     </div>
-    <div class="col-md">
 
+    <div class="row justify-content-between">
+      <div class="col-auto">
+        <h6 id="weather-description">{{ session['data']['current']['condition']['text'] }}</h6>
+      </div>
+      <div class="col-auto">
 
-      <ul class="widget-list">
-        <li>
-          <p id="main-feels_like">Feels</p>
-          <p>{{ session['data']['current']['feelslike_c'] | int }} C°</p>
-        </li>
-        <li>
-          <p id="main-pressure">Pressure</p>
-          <p>{{ session['data']['current']['pressure_mb'] }} hPa</p>
-        </li>
-        <li>
-          <p id="main-humidity">Humidity</p>
-          <p>{{ session['data']['current']['humidity'] }}%</p>
-        </li>
-        <li>
-          <p id="wind-speed">Wind</p>
-          <p>{{ session['data']['current']['wind_dir'] }} {{ session['data']['current']['wind_kph'] }} kph</p>
-        </li>
-        
-      </ul>
+      </div>
+
     </div>
   </div>
-</div>
+
+
+  <div class="container col-12 col-md py-3 widget">
+    <div class="row h-100">
+      <div class="col-md">
+        <ul class="widget-list">
+          <li>
+            <p id="main-feels_like">Date</p>
+            <p>{{ session['data']['current']['last_updated_epoch'] | date }}</p>
+          </li>
+          <li>
+            <p id="main-pressure">Precipitation</p>
+            <p>{{ session['data']['current']['precip_mm'] }} mm</p>
+          </li>
+          <li>
+            <p id="main-humidity">Visibility</p>
+            <p>{{ session['data']['current']['vis_km'] }} km</p>
+          </li>
+          <li>
+            <p id="clouds-all">Cloudiness</p>
+            <p>{{ session['data']['current']['cloud'] }}%</p>
+          </li>
+        </ul>
+
+      </div>
+      <div class="col-md">
+
+
+        <ul class="widget-list">
+          <li>
+            <p id="main-feels_like">Feels</p>
+            <p>{{ session['data']['current']['feelslike_c'] | int }} C°</p>
+          </li>
+          <li>
+            <p id="main-pressure">Pressure</p>
+            <p>{{ session['data']['current']['pressure_mb'] }} hPa</p>
+          </li>
+          <li>
+            <p id="main-humidity">Humidity</p>
+            <p>{{ session['data']['current']['humidity'] }}%</p>
+          </li>
+          <li>
+            <p id="wind-speed">Wind</p>
+            <p>{{ session['data']['current']['wind_dir'] }} {{ session['data']['current']['wind_kph'] }} kph</p>
+          </li>
+
+        </ul>
+      </div>
+    </div>
+  </div>
 
 </div>
 
@@ -98,28 +123,28 @@
   <div id="favorites-container" class="col-sm py-2">
     <h5 class="text-center">Favorites locations</h5>
     <ul>
-        {% if session['user_id'] %}
-        {% if session['favorite']|length == 0 %}
-        <li class=""><a href="{{ url_for('api.favorite', city=session['city'], add=True) }}"
-                class="btn">Add current to favorites</a></li>
-        {% else %}
-        {% for city in session['favorite'][:5] %}
-        <li class=""><a href="{{ url_for('api.set_city', city=session['city']) }}" class="btn">{{ city
-                }}</a></li>
-        {% endfor %}
-        {% endif %}
-        {% else %}
-        <li class=""><a href="{{ url_for('auth.login') }}" class="btn ">Login to use favorites</a></li>
-        {% endif %}
+      {% if session['user_id'] %}
+      {% if session['favorite']|length == 0 %}
+      <li class=""><a href="{{ url_for('api.favorite', city=session['city'], add=True) }}" class="btn">Add current to
+          favorites</a></li>
+      {% else %}
+      {% for city in session['favorite'][:5] %}
+      <li class=""><a href="{{ url_for('api.set_city', city=city) }}" class="btn">{{ city
+          }}</a></li>
+      {% endfor %}
+      {% endif %}
+      {% else %}
+      <li class=""><a href="{{ url_for('auth.login') }}" class="btn ">Login to use favorites</a></li>
+      {% endif %}
     </ul>
   </div>
-  
+
   <div id="recent-container" class="col-sm py-2">
     <h5 class="text-center">Recent locations</h5>
     <ul>
-        {% for city in session['recent'] %}
-        <li><a href="{{ url_for('api.set_city', city=city) }}" class="btn ">{{ city }}</a></li>
-        {% endfor %}
+      {% for city in session['recent'] %}
+      <li><a href="{{ url_for('api.set_city', city=city) }}" class="btn ">{{ city }}</a></li>
+      {% endfor %}
     </ul>
   </div>
 </div>

@@ -143,6 +143,29 @@ ul {
     background-color: var(--color1-l);
 }
 
-#favorites-container a.btn:hover, #recent-container a.btn:hover{
+.btn-alerts{
+    color: var(--color1);
+    width: 100%;
+    background-color: var(--color3);
+    display: inline-flex;
+    flex-direction: row;
+    padding: 0.5rem;
+    text-decoration: none;
+}
+.btn-alerts i{
+    font-size: 1.5rem;
+}
 
+.btn-alerts h6:last-child{
+    margin: auto 0;
+}
+
+.v-separator{
+    border-left-color: inherit;
+    border-left-style: solid;
+    border-left-width: 1px;
+    margin: 2px 10px;
+}
+.btn-alerts:hover{
+    color: var(--color1);
 }
