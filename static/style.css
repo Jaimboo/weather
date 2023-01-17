@@ -7,24 +7,37 @@
     --color4-l: #ebebeb69;
 }
 
+html,
+body {
+    min-height: 100vh;
+    margin: 0;
+}
+
 body {
     background-color: var(--color4);
     color: var(--color4);
+    display: grid;
+    grid-template-rows: auto 1fr auto;
 }
-.nav-link{
+
+#main {
+    color:var(--color1);
+}
+
+.nav-link {
     color: var(--color4);
 }
+
 .title {
     color: var(--color2) !important;
 }
 
-#footer div .nav-link{
-    color: var(--color4-lo) ;
+#footer div .nav-link {
+    color: var(--color4-lo);
 }
 
 .navbar,
-#footer
-{
+#footer {
     background-color: var(--color1);
 }
 
@@ -37,6 +50,7 @@ body {
 .nav-link:hover {
     color: var(--color2) !important;
 }
+
 .active {
     color: var(--color2) !important;
 }
@@ -46,19 +60,22 @@ body {
     border-color: var(--color2);
 }
 
-[class*=fav]{
+[class*=fav] {
     color: var(--color2);
     transition: ease transform 200ms;
 }
 
-[class*=fav]:hover{
+[class*=fav]:hover {
     transform: scale(1.2);
     transform-origin: center;
     color: var(--color2);
 
 }
 
-.search:hover, #favorites-container a.btn:hover, #recent-container a.btn:hover{
+.search:hover,
+#favorites-container a.btn:hover,
+#recent-container a.btn:hover,
+#login-form .btn-primary {
     color: var(--color1);
     background-color: var(--color2);
     border-color: var(--color2);
@@ -76,10 +93,12 @@ body {
     display: flex;
     flex-direction: column;
 }
-.widget-list p{
+
+.widget-list p {
     margin: 0;
 }
-.widget-list li{
+
+.widget-list li {
     display: inline-flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -103,7 +122,7 @@ ul {
 
 #weather-icon {
     height: 120px;
-    margin-right:-14px;
+    margin-right: -14px;
 }
 
 .page-img {
@@ -129,13 +148,15 @@ ul {
     outline: 0;
     box-shadow: initial;
 }
+
 #main-temp {
     letter-spacing: -0.4rem;
     font-size: 5rem;
     font-family: sans-serif;
 }
 
-#favorites-container a.btn, #recent-container a.btn{
+#favorites-container a.btn,
+#recent-container a.btn {
     width: 50%;
     display: block;
     margin: 0.5rem auto;
@@ -143,7 +164,7 @@ ul {
     background-color: var(--color1-l);
 }
 
-.btn-alerts{
+.btn-alerts {
     color: var(--color1);
     width: 100%;
     background-color: var(--color3);
@@ -152,20 +173,74 @@ ul {
     padding: 0.5rem;
     text-decoration: none;
 }
-.btn-alerts i{
+
+.btn-alerts i {
     font-size: 1.5rem;
 }
 
-.btn-alerts h6:last-child{
+.btn-alerts h6:last-child {
     margin: auto 0;
 }
 
-.v-separator{
+.v-separator {
     border-left-color: inherit;
     border-left-style: solid;
     border-left-width: 1px;
     margin: 2px 10px;
 }
-.btn-alerts:hover{
+
+.btn-alerts:hover {
     color: var(--color1);
+}
+
+.modal {
+    color: var(--color1);
+}
+
+#login-form .card-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: center;
+    width: fit-content;
+    margin: 0.5rem auto;
+}
+
+#login-form {
+    width: 70%;
+    max-width: 500px;
+    min-width: fit-content;
+}
+
+
+#login-form .card-body * {
+    width: 100%;
+    padding: 0.5rem;
+}
+
+#login-form input[type=text],
+#login-form input[type=password] {
+    border: none;
+    border: 1px solid transparent;
+    border-bottom: 1px solid var(--color2);
+    outline: none;
+    transition: all cubic-bezier(0.39, 0.58, 0.57, 1) 150ms;
+    margin-bottom: 0.5rem;
+}
+
+#login-form input[type=text]:focus-visible,
+#login-form input[type=password]:focus-visible {
+    border: 1px solid var(--color2);
+    border-radius: 5px;
+}
+
+#main > * {
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+}
+
+@media only screen and (max-width: 767px ) {
+    #col1 .widget-list:last-child {
+        border-bottom: 1px solid var(--color1);
+    }
 }

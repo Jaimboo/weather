@@ -2,7 +2,9 @@
 
 {% block content %}
 
-<div class="row py-2">
+{% if session['data']['alerts']['alert'] %}
+<div class="row mt-2">
+
   <a href="#alerts-modal" class="btn-alerts" data-bs-toggle="modal">
     <i class="bi bi-exclamation-triangle-fill"></i>
     <h6>{{ session['data']['alerts']['alert'] | length }}</h6>
@@ -13,20 +15,46 @@
   <div class="modal fade" id="alerts-modal" tabindex="-1" aria-labelledby="alerts-modal-label" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
+
         <div class="modal-header">
-          <h1 class="modal-title fs-5" id="alerts-modal-label">Modal title</h1>
+          <h1 class="modal-title fs-5" id="alerts-modal-label">Alerts</h1>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
+
         <div class="modal-body">
-          ...
+          <div class="accordion" id="accordion-alert">
+          {% for alert in session['data']['alerts']['alert'] %}
+            <div class="accordion-item">
+
+              <h5 class="accordion-header" id="heading-{{ loop.index }}">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                  data-bs-target="#alert-{{ loop.index }}" aria-expanded="true"
+                  aria-controls="alert-{{ loop.index }}">
+                  {{ alert['event'] }}
+                </button>
+              </h5>
+
+              <div id="alert-{{ loop.index }}" class="accordion-collapse collapse" aria-labelledby="heading-{{ loop.index }}" data-bs-parent="accordion-alert">
+                <div class="accordion-body">
+                  <p class="text-muted">Effective: {{ alert['effective'] }}</p>
+                  <p class="text-muted">Exprires: {{ alert['expires'] }}</p>
+                  <p class="">{{ alert['desc'] }}</p>
+                </div>
+              </div>
+
+            </div>
+            {% endfor %}
+          </div>
         </div>
+
       </div>
     </div>
   </div>
 
 </div>
+{% endif %}
 
-<div class="row justify-content-between gap-2">
+<div class="row justify-content-between mt-2 gap-2">
 
   <div class="col-12 col-md py-2 widget">
     <div class="row">
@@ -68,9 +96,9 @@
   </div>
 
 
-  <div class="container col-12 col-md py-3 widget">
+  <div class="col-12 col-md py-3 widget">
     <div class="row h-100">
-      <div class="col-md">
+      <div id="col1" class="col-md">
         <ul class="widget-list">
           <li>
             <p id="main-feels_like">Date</p>
@@ -91,7 +119,7 @@
         </ul>
 
       </div>
-      <div class="col-md">
+      <div id="col2" class="col-md">
 
 
         <ul class="widget-list">
