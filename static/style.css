@@ -20,6 +20,16 @@ body {
     grid-template-rows: auto 1fr auto;
 }
 
+.flash-container{
+    position: fixed;
+    left: 0;
+    right: 0;
+    width: fit-content;
+    z-index: 2;
+    top: 4rem;
+    transition: all 200ms ease;
+}
+
 #main,
 .modal,
 .btn-alerts:hover

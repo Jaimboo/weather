@@ -36,9 +36,10 @@ def register():
                 error = 'User already registered'
             else:
                 # redirect to login view if no error occur
+                flash('Succefully registered. Now you can login.', 'success')
                 return redirect(url_for('auth.login'))
 
-        flash(error)
+        flash(error, 'warning')
 
     return render_template('register.html')
 
@@ -72,9 +73,10 @@ def login():
             session['favorite'] = []
             for row in db.cursor().execute('SELECT city FROM favorite WHERE u_id = ?', (session['user_id'],)).fetchall():
                 session['favorite'].append(row['city'])
+            flash(f'Welcome,{username}', 'success')
             return redirect(url_for('api.index'))
 
-        flash(error)
+        flash(error, 'danger')
 
     return render_template('/login.html')
 
