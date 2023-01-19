@@ -37,8 +37,17 @@ The projects is composed by five python files that compose the app:
     * `search_api` is a function to request the list of results requested into the `search` view;
     * in addition to those function there are also four template filters used in jinja templates to format some data.
 
-## **HTML, CSS AND JAVASCRIPT**
-The design of the project is poorly treated and use the basics of [bootstrap 5](https://getbootstrap.com/docs/5.3/getting-started/introduction/) and just some css rules for make the project readable. Javascript is used to create a pagination system into the `days` template.
+## **TEMPLATES**
+The webapp is composed by eight templates: the first one is a layout template (layout.html) that is connected to the main resources (as [bootstrap 5](https://getbootstrap.com/docs/5.3/getting-started/introduction/), Javascript files and css stylesheet) and also import the navigation bar (navbar.html) and footer (footer.html) for all the pages.
+
+The remaining templates are recalled based on the requested result:
++ index.html is the main page that show the current weather information;
++ login.html and register.html are similar to each other and show a form for give to the user the abilty to register an account and login into it;
++ days.html, instead, return the detailed infomation corresponding on the city selected for the next three days;
++ results.html is a simple page that prompt the user the search results.
+
+## **JAVASCRIPT**
+Into the project can there are three javascript files; while main.js is always imported because is necessary in all the pages, pagination.js is recalled only into the days.html to make the table able to change the target of the view, and aqi.js is also recalled into the index.html to style the air quality widget according to the selected city.
 
  ## **USAGE**
  1. Clone the repository.

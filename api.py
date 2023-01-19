@@ -1,5 +1,5 @@
 from ast import Global
-from flask import Blueprint, g, redirect, render_template, current_app, request, url_for, session, abort, flash
+from flask import flash, Blueprint, g, redirect, render_template, current_app, request, url_for, session
 
 from werkzeug.exceptions import abort
 
@@ -62,13 +62,12 @@ def set_city(city):
 
 # Helpers functions
 def get_api(city, new=False):
-
     # Check if the session has a last updated or if it is older than 15 minutes, than updated the json.
-    if session.get('last_u') is None or session['last_u'] + timedelta(minutes = 15) < datetime.utcnow().replace(tzinfo=timezone.utc) or new == True:
-        data = requests.get(f'http://api.weatherapi.com/v1/forecast.json?key={current_app.config["SECRET_KEY"]}&q={city}&days=3&aqi=no&alerts=yes')
+    if session.get('last_u') is None or session.get('last_u') + timedelta(minutes = 60) < datetime.utcnow().replace(tzinfo=timezone.utc) or new == True:
+        data = requests.get(f'http://api.weatherapi.com/v1/forecast.json?key={current_app.config["SECRET_KEY"]}&q={city}&days=3&aqi=yes&alerts=yes')
+        print('updated')
         session['data'] = data.json()
-        print(session['data'])
-        session['last_u'] = datetime.utcnow()
+        session['last_u'] =  datetime.utcnow().replace(tzinfo=timezone.utc)
 
 def search_api(q):
     response = requests.get(f'http://api.weatherapi.com/v1/search.json?key={current_app.config["SECRET_KEY"]}&q={q}')
@@ -78,21 +77,27 @@ def search_api(q):
 @login_required
 def favorite():
     city = request.args.get('city')
-    add = bool(request.args.get('add'))
+    add = request.args.get('add')
     db = get_db()
 
-    if add == True:
+    if add == "True":
         db.execute("INSERT INTO favorite (city, u_id) VALUES (?, ?)", (city, session['user_id']))
         db.commit()
 
-        session['favorite'] = []
-        for row in db.cursor().execute('SELECT city FROM favorite WHERE u_id = ?', (session['user_id'],)).fetchall():
-            session['favorite'].append(row['city'])
+        
+    elif add == "False":
+        db.execute("DELETE FROM favorite WHERE city = ? AND u_id = ?", (city, session['user_id']))
+        db.commit()
+    
+    session['favorite'] = []
+    for row in db.cursor().execute('SELECT city FROM favorite WHERE u_id = ?', (session['user_id'],)).fetchall():
+        session['favorite'].append(row['city'])
+
     return redirect(url_for('api.index'))
 
 # jinja template filters
 @bp.app_template_filter()
-def datetimeformat(value, format='%Y/%m/%d %H:%M'):
+def datetimeformat(value, format='%Y/%m/%d %H-%M'):
     date = datetime.fromtimestamp(value).strftime(format)
     return date
 
@@ -106,6 +111,11 @@ def day_str(value, format='%a'):
     date = datetime.fromtimestamp(value).strftime(format)
     return date
     
+@bp.app_template_filter()
+def date(value, format='%d/%m %H:%M'):
+    date = datetime.fromtimestamp(value).strftime(format)
+    return date
+
 @bp.app_template_filter()
 def hour(value, format='%H'):
     date = datetime.fromtimestamp(value).strftime(format)

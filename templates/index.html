@@ -1,56 +1,242 @@
 {% extends 'layout.html' %}
 
-{% block header %}
-    {% block title %}{% endblock %}
-{% endblock %}
+{% block script %}
+<script src="{{ url_for('static', filename='js/aqi.js') }}"></script>
+{% endblock script %}
 
 {% block content %}
-    <div class="row">
 
-      <div class="col">
-        
-        <div class="row">
-          <div class="col text-start m-auto">
-            <p id="location-name">{{ data["location"]['name'] }}, {{ data['location']['region'] }}, {{data['location']['country']}}</p>
-          </div>
-          <div class="col-auto">
-            <a href="{{ url_for('api.favorite', city=session['city'], add=True) }}">add to favorite</a>
-          </div>
+{% if session['data']['alerts']['alert'] %}
+<div class="row mb-2">
+
+  <a href="#alerts-modal" class="btn-alerts" data-bs-toggle="modal">
+    <i class="bi bi-exclamation-triangle-fill"></i>
+    <h6>{{ session['data']['alerts']['alert'] | length }}</h6>
+    <span class="v-separator"></span>
+    <h6>Click here to show alerts</h6>
+  </a>
+
+  <div class="modal fade" id="alerts-modal" tabindex="-1" aria-labelledby="alerts-modal-label" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="alerts-modal-label">Alerts</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
 
-        <div class="row text-center justify-content-evenly text-md-start align-items-center">
+        <div class="modal-body">
+          <div class="accordion" id="accordion-alert">
+            {% for alert in session['data']['alerts']['alert'] %}
+            <div class="accordion-item">
 
-          <div class="col-12 col-md-auto">
-            <img id="weather-icon" src="{{ data['current']['condition']['icon'] }}" alt="{{ data['current']['condition']['text'] }}">
-          </div>
-          <div class="col-auto d-flex gap-3">
-            <ul class="widget-list">
-              <li><p id="weather-description">{{ data['current']['condition']['text'] }}</p></li>
-              <li><p id="main-temp">Temperature: {{ data['current']['temp_c'] }} C°</p></li>
-              <li><p id="main-feels_like">Feels: {{ data['current']['feelslike_c'] }} C°</p></li>
-            </ul>
-            <ul class="widget-list">
-              <li><p id="main-pressure">Pressure: {{ data['current']['pressure_mb'] }} hPa</p></li>
-              <li><p id="main-humidity">Humidity: {{ data['current']['humidity'] }}%</p></li>
-              <li><p id="wind-speed">Wind: {{ data['current']['wind_kph'] }} kph</p></li>
-              <li><p id="clouds-all">Cloudiness: {{ data['current']['cloud'] }}%</p></li>
-            </ul>
-          </div>
+              <h5 class="accordion-header" id="heading-{{ loop.index }}">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                  data-bs-target="#alert-{{ loop.index }}" aria-expanded="true" aria-controls="alert-{{ loop.index }}">
+                  {{ alert['event'] }}
+                </button>
+              </h5>
 
-        </div>
+              <div id="alert-{{ loop.index }}" class="accordion-collapse collapse"
+                aria-labelledby="heading-{{ loop.index }}" data-bs-parent="accordion-alert">
+                <div class="accordion-body">
+                  <p class="text-muted">Effective: {{ alert['effective'] }}</p>
+                  <p class="text-muted">Exprires: {{ alert['expires'] }}</p>
+                  <p class="">{{ alert['desc'] }}</p>
+                </div>
+              </div>
 
-        <div class="row">
-          <div class="col d-flex justify-content-between">
-            <!-- NEED IF -->
-            {% if data['alerts']['alert'] %}
-              <p id="alerts">{{ data['alerts']['alert'][0]['event'] }}</p>
-            {% else %}
-              <p id="alerts">No Alerts</p>
-            {% endif %}
-            <p>Powered by <a href="https://www.weatherapi.com/" title="Free Weather API">WeatherAPI.com</a></p>          
+            </div>
+            {% endfor %}
           </div>
         </div>
 
       </div>
     </div>
+  </div>
+
+</div>
+{% endif %}
+
+<div class="row justify-content-between gap-2">
+
+  <div class="col-12 col-md py-2 widget">
+    <div class="row">
+      <div class="col">
+        <h6 id="location-name">{{ session['data']["location"]['name'] }}, {{ session['data']['location']['region'] }},
+          {{session['data']['location']['country']}}</h6>
+      </div>
+      <div class="col-auto">
+        {% if session['city'] in session['favorite'] %}
+        <a id="fav-btn" href="{{ url_for('api.favorite', city=session['city'], add=False) }}" class="btn fav-remove"
+          title="Remove from favorites"><i class="bi bi-star-fill"></i></a>
+        {% else %}
+        <a id="fav-btn" href="{{ url_for('api.favorite', city=session['city'], add=True) }}" class="btn fav-add "
+          title="Add to favorites"><i class="bi bi-star"></i></a>
+        {% endif %}
+      </div>
+
+    </div>
+
+    <div class="row justify-content-center">
+      <div class="col-auto p-0">
+        <img id="weather-icon" src="{{ session['data']['current']['condition']['icon'] }}"
+          alt="{{ session['data']['current']['condition']['text'] }}">
+      </div>
+      <div class="col-auto p-0">
+        <p id="main-temp">{{ session['data']['current']['temp_c'] | int }}°</p>
+      </div>
+    </div>
+
+    <div class="row justify-content-between">
+      <div class="col-auto">
+        <h6 id="weather-description">{{ session['data']['current']['condition']['text'] }}</h6>
+      </div>
+      <div class="col-auto">
+
+      </div>
+
+    </div>
+  </div>
+
+
+  <div class="col-12 col-md py-3 widget">
+    <div class="row h-100">
+      <div id="col1" class="col-md">
+        <ul class="widget-list">
+          <li>
+            <p id="main-feels_like">Date</p>
+            <p>{{ session['data']['current']['last_updated_epoch'] | date }}</p>
+          </li>
+          <li>
+            <p id="main-pressure">Precipitation</p>
+            <p>{{ session['data']['current']['precip_mm'] }} mm</p>
+          </li>
+          <li>
+            <p id="main-humidity">Visibility</p>
+            <p>{{ session['data']['current']['vis_km'] }} km</p>
+          </li>
+          <li>
+            <p id="clouds-all">Cloudiness</p>
+            <p>{{ session['data']['current']['cloud'] }}%</p>
+          </li>
+        </ul>
+
+      </div>
+      <div id="col2" class="col-md">
+
+
+        <ul class="widget-list">
+          <li>
+            <p id="main-feels_like">Feels</p>
+            <p>{{ session['data']['current']['feelslike_c'] | int }} C°</p>
+          </li>
+          <li>
+            <p id="main-pressure">Pressure</p>
+            <p>{{ session['data']['current']['pressure_mb'] }} hPa</p>
+          </li>
+          <li>
+            <p id="main-humidity">Humidity</p>
+            <p>{{ session['data']['current']['humidity'] }}%</p>
+          </li>
+          <li>
+            <p id="wind-speed">Wind</p>
+            <p>{{ session['data']['current']['wind_dir'] }} {{ session['data']['current']['wind_kph'] }} kph</p>
+          </li>
+
+        </ul>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="row justify-content-between gap-2 widget mt-2">
+  <div id="favorites-container" class="col-sm py-2">
+    <h5 class="text-center">Favorites locations</h5>
+    <ul>
+      {% if session['user_id'] %}
+      {% if session['favorite']|length == 0 %}
+      <li class=""><a href="{{ url_for('api.favorite', city=session['city'], add=True) }}" class="btn">Add current to
+          favorites</a></li>
+      {% else %}
+      {% for city in session['favorite'][:5] %}
+      <li class=""><a href="{{ url_for('api.set_city', city=city) }}" class="btn">{{ city
+          }}</a></li>
+      {% endfor %}
+      {% endif %}
+      {% else %}
+      <li class=""><a href="{{ url_for('auth.login') }}" class="btn ">Login to use favorites</a></li>
+      {% endif %}
+    </ul>
+  </div>
+
+  <div id="recent-container" class="col-sm py-2">
+    <h5 class="text-center">Recent locations</h5>
+    <ul>
+      {% for city in session['recent'] %}
+      <li><a href="{{ url_for('api.set_city', city=city) }}" class="btn ">{{ city }}</a></li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>
+
+<div class="row justify-content-evenly gap-2 widget mt-2">
+  <div class="row py-2">
+    <h5 class="text-center">Air quality</h5>
+  </div>
+  <div class="col-auto py2">
+
+
+    <div class="row align-items-center flex-column">
+
+      <div class="bar" data-active="{{ session['data']['current']['air_quality']['us-epa-index'] }}">
+        <span class="section"></span>
+        <span class="section"></span>
+        <span class="section"></span>
+        <span class="section"></span>
+        <span class="section"></span>
+        <span class="section"></span>
+      </div>
+
+      <h6 id="aqi-text" class="text-capitalize">Good</h6>
+
+    </div>
+
+  </div>
+  <div id="aqi-list" class="col-md-5 py-2">
+    <ul class="widget-list">
+      <li>
+        <p class="aqi-details-sections" data-aqi-type="co"
+          data-value="{{ '%0.2f' % session['data']['current']['air_quality']['co'] | float}}">CO</p>
+        <p>{{ "%0.2f" % session['data']['current']['air_quality']['co'] | float}} μg/m3</p>
+      </li>
+      <li>
+        <p class="aqi-details-sections" data-aqi-type="no2"
+          data-value="{{ '%0.2f' % session['data']['current']['air_quality']['no2'] | float}}">NO2</p>
+        <p>{{ "%0.2f" % session['data']['current']['air_quality']['no2'] | float}} μg/m3</p>
+      </li>
+      <li>
+        <p class="aqi-details-sections" data-aqi-type="o3"
+          data-value="{{ '%0.2f' % session['data']['current']['air_quality']['o3'] | float}}">O3</p>
+        <p>{{ "%0.2f" % session['data']['current']['air_quality']['o3'] | float}} μg/m3</p>
+      </li>
+      <li>
+        <p class="aqi-details-sections" data-aqi-type="so2"
+          data-value="{{ '%0.2f' % session['data']['current']['air_quality']['so2'] | float}}">SO2</p>
+        <p>{{ "%0.2f" % session['data']['current']['air_quality']['so2'] | float}} μg/m3</p>
+      </li>
+      <li>
+        <p class="aqi-details-sections" data-aqi-type="pm2_5"
+          data-value="{{ '%0.2f' % session['data']['current']['air_quality']['pm2_5'] | float}}">PM2.5</p>
+        <p>{{ "%0.2f" % session['data']['current']['air_quality']['pm2_5'] | float}} μg/m3</p>
+      </li>
+      <li>
+        <p class="aqi-details-sections" data-aqi-type="pm10"
+          data-value="{{ '%0.2f' % session['data']['current']['air_quality']['pm10'] | float}}">PM10</p>
+        <p>{{ "%0.2f" % session['data']['current']['air_quality']['pm10'] | float}} μg/m3</p>
+      </li>
+    </ul>
+  </div>
+</div>
 {% endblock %}
