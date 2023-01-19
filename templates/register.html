@@ -1,15 +1,20 @@
 {% extends 'layout.html' %}
 
-{% block header %}
-    <h1>{% block title %}Register{% endblock %}</h1>
-{% endblock header %}
-
 {% block content %}
-<form method="post">
-    <label for="username">Username</label>
-    <input type="text" name="username" id="username" required>
-    <label for="password">Password</label>
-    <input type="password" name="password" id="password" required>
-    <input type="submit" value="Register">
-</form>
+
+<div class="row justify-content-center align-items-center h-100">
+    <div id="login-form" class="card">
+        <form method="post" action="{{ url_for('auth.register') }}">
+            <div class="card-body">
+                <h4 class="card-title mb-3">Register</h4>
+                <input placeholder = "Username" type="text" name="username" id="username" required>
+                <input placeholder = "Password" type="password" name="password" id="password" required>
+                <input class="btn btn-primary mt-5" type="submit" value="Register">
+                <p class="my-0 text-center">or</p>
+                <a class="btn btn-secondary" href="{{ url_for('auth.login') }}">Login</a>
+            </div>
+        </form>
+    </div>
+</div>
+
 {% endblock content %}

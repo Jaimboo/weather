@@ -1,0 +1,15 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div id="results-container" class="col widget d-flex flex-column">
+
+    {% for q in data %}
+        <a class="" href="{{ url_for('api.set_city', city=q['name']) }}">
+            <h5 class="p-2">{{ q['name'] }}, {{ q['region'] }}, {{ q['country'] }}</h5>    
+        </a>
+    {% endfor %}
+</div>
+{% endblock content %}
+
+{% block script %}
+{% endblock script %}
