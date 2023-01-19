@@ -20,8 +20,9 @@ def index():
     if session.get('city') is None:
         session['city'] = 'Rome'
         session['recent'] = [session['city']]
+        session['new'] = True
 
-    # Update json file if needed
+    # Update session if needed
     if session.get('new') is not None:
         get_api(session['city'], new = True)
         session.pop('new', default=None)
@@ -33,7 +34,7 @@ def index():
 
 @bp.route('/days')
 def days():
-    # Update json file if needed
+    # Update session if needed
     get_api(session['city'])
             
     return render_template('days.html')
