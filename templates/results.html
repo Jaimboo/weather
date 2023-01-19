@@ -2,14 +2,11 @@
 
 {% block content %}
 {% for q in data %}
-<ul>
-    <a href="{{ url_for('api.set_city', city=q['name']) }}">
-        <li>
-            <h5>{{ q['name'] }}, {{ q['region'] }}, {{ q['country'] }}</h5>
-            <h6>{{ q['lat'] }}/{{ q['lon'] }}</h6>
-        </li>
-    </a>
-</ul>
+<a href="{{ url_for('api.set_city', city=q['name']) }}">
+    <span class="row mt-2 widget p-2">
+        <h5>{{ q['name'] }}, {{ q['region'] }}, {{ q['country'] }}</h5>    
+    </span>
+</a>
 {% endfor %}
 {% endblock content %}
 

@@ -12,6 +12,15 @@ body {
     min-height: 100vh;
     margin: 0;
 }
+a {
+    text-decoration: none;
+    color: var(--color1);
+    transition: all 200ms ease;
+}
+
+a:hover, footer a {
+    color: var(--color2);
+}
 
 body {
     background-color: var(--color4);
