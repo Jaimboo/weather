@@ -1,11 +1,11 @@
 {% extends 'layout.html' %}
 
 {% block content %}
-<div id="main" class="col-12 col-sm py-2">
+<div id="main" class="col-12 col-sm py-2 widget">
 
     <div class="row">
         <div class="col">
-            <p>{{ session['data']['location']['name'] }}, {{ session['data']['location']['region'] }}, {{ session['data']['location']['country'] }}</p>
+            <h5>{{ session['data']['location']['name'] }}, {{ session['data']['location']['region'] }}, {{ session['data']['location']['country'] }}</h5>
         </div>
     </div>
     <div class="row">
@@ -25,7 +25,7 @@
         </nav>
         <div class="table-responsive-sm">
 
-            <table class="table table-dark table-striped pages-container" id="pagination">
+            <table class="table table-striped pages-container" id="pagination">
                 <thead>
                     <tr class="text-center">
                         <th colspan="3">info</th>

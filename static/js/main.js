@@ -9,10 +9,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         return true
     })
-
+    
     let flash_container = document.querySelector('.flash-container');
-
-    flash_container.classList.toggle('fade')
-
-    setTimeout(() => {flash_container.classList.toggle('fade')}, 1500)
+    if (flash_container != null){
+        flash_container.classList.toggle('fade')
+        setTimeout(() => {flash_container.classList.toggle('fade')}, 3000)
+    }
 })
