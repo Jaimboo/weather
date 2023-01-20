@@ -1,0 +1,3 @@
+- no results for search
+- hour list in days not starting from 0
+- days view not responsive
