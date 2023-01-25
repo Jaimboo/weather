@@ -43,7 +43,7 @@
                 {% endif %}
 
                 <form class="d-flex ms-lg-auto" role="search" action="{{ url_for('api.search') }}" method="GET">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="q">
+                    <input autocomplete="none" class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="q">
                     <button class="btn btn-outline-success search" type="submit">Search</button>
                 </form>
 
