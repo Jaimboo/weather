@@ -1,6 +1,7 @@
 # **Weather WebApp**
 > #### Video Demo: [WeatherWebApp - Youtube](https://youtu.be/kzdqHFPfPhc)
 > #### Description: A basic webapp for visualize weather forecast providing detailed weather information and weather alerts for location all over the world.  
+> #### Deployed: This projects has been deployed using [PythonAnyWhere](https://jaimboo.eu.pythonanywhere.com)
 
 ## **Introduction**
 In this project i tried to recreate a basic web-app to consult weather information.
